@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e8dcec27ce482f89a21f6055eef56d, type: 3}
+  m_Name: AudioClipDataConfigs
+  m_EditorClassIdentifier: 
+  desc: "\u8BE5\u914D\u7F6E\u4E3A\u81EA\u52A8\u751F\u6210"
+  Config:
+    ConfigList:
+    - GUID: 63d2065b4fd5b2649888f38b686b72fe
+      Name: TestAudio0
+      Path: Audio/TestAudio0
+      Description: "\u6D4B\u8BD5\u6587\u672C1\n\u7B2C\u4E8C\u884C"
+    - GUID: daf7c2c48e998b342bb65ba6d1d2a2ae
+      Name: TestAudio2
+      Path: Audio/TestAudio2
+      Description: "\u6D4B\u8BD5\u6587\u672C2"
+    - GUID: e2d7b8e1769742c489b69269c6191e93
+      Name: TestAudio3
+      Path: Audio/TestAudio3
+      Description: "\u6D4B\u8BD5\u6587\u672C3"

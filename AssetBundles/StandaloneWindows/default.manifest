@@ -1,0 +1,20 @@
+ManifestFileVersion: 0
+CRC: 788927206
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ff23096b100e15dba3d279e19e81ba26
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9a2ca7bdbd1871f7131daf57de908e0c
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: ff23096b100e15dba3d279e19e81ba26
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Assets/Audio/ScaryVFX.wav
+Dependencies: []

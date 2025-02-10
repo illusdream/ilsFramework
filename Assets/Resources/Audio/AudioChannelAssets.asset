@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1195d4211634bf9811a072c4fc846c6, type: 3}
+  m_Name: AudioChannelAssets
+  m_EditorClassIdentifier: 
+  AudioMixerPath: Mixer/MainAudioMixer
+  audioChannelDatas:
+  - Name: BGM
+    AudioChannelType: 0
+    MaxAudioClipCount: 32
+    MixerGroupName: BGM
+    MixerVolumeParameterName: BGMVolume
+    ChannelVolumeMin: 0
+    ChannelVolumeMax: 0
+  - Name: Sound
+    AudioChannelType: 0
+    MaxAudioClipCount: 32
+    MixerGroupName: Sound
+    MixerVolumeParameterName: SoundVolume
+    ChannelVolumeMin: 0
+    ChannelVolumeMax: 0
