@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using ilsFramework;
 using ilsFrameWork;
 using Sirenix.OdinInspector;
@@ -37,7 +40,6 @@ namespace Test
 
         public void Start()
         {
-            222.LogSelf();
           // //测试同步加载  
            
           // //测试异步加载
@@ -123,7 +125,68 @@ namespace Test
             AssetDatabase.Refresh();
         }
 #endif
+        [Button]
+        public void NBTTestWrite()
+        {
+            
+                NBTCompound compound = new NBTCompound();
+                compound.Name = "TestNBT";
+                compound.Set("Bool",false);
+                compound.Set("Byte",(byte)1);
+                compound.Set("Short",(short)2);
+                compound.Set("Int",(int)3);
+                compound.Set("Long",2131);
+                compound.Set("Float",1.4f);
+                compound.Set("Double",1.5d);
+                compound.Set("String","测试String");
+                compound.Set("Vector",new Vector3(1,2));
+                NBTCompound testCompound = new NBTCompound();
+                testCompound.Name = "testCompound";
+                testCompound.Set("1",1);
+                compound.Set("Compound",testCompound);
 
+                var list = new List<Vector2>
+                {
+                    new Vector2(1,1),
+                    new Vector2(2,2),
+                    new Vector2(3,3),
+                    new Vector2(4,4),
+                    new Vector2(5,5),
+                };
+                compound.SetList("List",list);
+            NBT.SaveNBTFile(compound,"F:\\Unity\\ilsFramework\\1111\\NBTTest");
+
+        }
+        [Button]
+        public void NBTTestRead()
+        {
+            Stopwatch sw = new Stopwatch();
+            // 打开流并读取。
+            
+            sw.Start();
+            var nbt = NBT.OpenNBTFile("F:\\Unity\\ilsFramework\\1111\\NBTTest");
+            
+            nbt.LogSelf();
+
+            if (nbt.TryGet("Vector", out Vector3 v))
+            {
+                v.LogSelf();
+            }
+            
+            if (nbt.TryGetList("List", out List<Vector2> list))
+            {
+                foreach (var vector2 in list)
+                {
+                   //vector2.LogSelf();
+                }
+            }
+            
+            
+            sw.Stop();
+            sw.ElapsedMilliseconds.LogSelf();
+            sw.Elapsed.LogSelf();
+            
+        }
 
     }
 }

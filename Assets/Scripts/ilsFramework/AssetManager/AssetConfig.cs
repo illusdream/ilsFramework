@@ -33,7 +33,7 @@ namespace ilsFramework
         
         public AssetConfig()
         {
-            
+           
         }
         
 #if UNITY_EDITOR
