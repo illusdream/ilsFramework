@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using ilsFramework;
 using ilsFrameWork;
@@ -34,19 +35,21 @@ namespace Test
         
         public void Awake()
         {
-
+            
         }
 
 
         public void Start()
         {
-          // //测试同步加载  
-           
-          // //测试异步加载
-          // AssetManager.Instance.LoadAsync(Prefabs.Test1, (o) =>
-          // {
-          //     Instantiate(o, Vector3.right, Quaternion.identity);
-          // });
+            UIManager.Instance.GetUIPanel<TestUIPanel>().Open();
+            // //测试同步加载  
+
+            // //测试异步加载
+            // AssetManager.Instance.LoadAsync(Prefabs.Test1, (o) =>
+            // {
+            //     Instantiate(o, Vector3.right, Quaternion.identity);
+            // });
+            
         }
 
         public void Update()
@@ -187,6 +190,49 @@ namespace Test
             sw.Elapsed.LogSelf();
             
         }
+        [Button]
+        public void TestGenerateClass()
+        {
+            Stopwatch sw = new Stopwatch();
+            Type type = typeof(Test);
+            ConstructorInfo constructors;
+            constructors = type.GetConstructor(Type.EmptyTypes);
+            sw.Start();
+            for (int i = 0; i < 10000; i++)
+            {
+                _ = new Test();
+            }
+            sw.Stop();
+            sw.Elapsed.TotalMilliseconds.LogSelf();
+            
+            sw.Reset();
+            
+            sw.Start();
+            for (int i = 0; i < 10000; i++)
+            {
+                _ = Activator.CreateInstance(type);
+            }
+            sw.Stop();
+            sw.Elapsed.TotalMilliseconds.LogSelf();
+            
+            sw.Reset();
+            sw.Start();
+            for (int i = 0; i < 10000; i++)
+            {
+                _ = constructors.Invoke(Array.Empty<object>());
+            }
+            sw.Stop();
+            sw.Elapsed.TotalMilliseconds.LogSelf();
+        }
 
+        [Button]
+        public void CloseUITest()
+        {
+            UIManager.Instance.GetUIPanel<TestUIPanel>().Close();
+        }
+        private class Test
+        {
+            
+        }
     }
 }

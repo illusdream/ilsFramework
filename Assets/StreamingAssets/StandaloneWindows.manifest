@@ -1,7 +1,10 @@
 ManifestFileVersion: 0
-CRC: 4012432968
+CRC: 2311466208
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
+      Name: 111/22/scaryvfx
+      Dependencies: {}
+    Info_1:
       Name: default
       Dependencies: {}

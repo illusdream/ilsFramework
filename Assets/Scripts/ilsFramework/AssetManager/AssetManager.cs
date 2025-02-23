@@ -92,7 +92,11 @@ namespace ilsFramework
             assetBundleLoader.LoadAssetAsync<T>(assetBundleName, assetName, callback);
         }
 
-        //通用同步加载
+        /// <summary>
+        /// AssetKey同步加载
+        /// </summary>
+        /// <param name="assetKey"></param>
+        /// <returns></returns>
         public Object Load(string assetKey)
         {
             Object result = null;
@@ -120,7 +124,11 @@ namespace ilsFramework
             }
             return result;
         }
-        //通用异步加载
+        /// <summary>
+        /// AssetKey异步加载
+        /// </summary>
+        /// <param name="assetKey"></param>
+        /// <param name="callback"></param>
         public void LoadAsync(string assetKey, Action<Object> callback)
         {
             var qResult = assetInfos.Where((info) => info.AssetKey == assetKey);
@@ -143,6 +151,71 @@ namespace ilsFramework
             else
             {
                 $"不存在该Key:{assetKey},请检查代码".ErrorSelf();
+            }
+        }
+
+        /// <summary>
+        ///  通用加载方式
+        /// </summary>
+        /// <param name="assetLoadMode">加载模式</param>
+        /// <param name="assetLoadStr">加载所使用的字符串
+        /// <para>Resources模式:Resource下的相对文件路径</para>
+        /// <para>AssetBundle模式:{AssetBundle名}/{对应资源名}</para>
+        /// <para>AssetKey模式:对应的AssetKey</para>
+        /// </param>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public T Load<T>(EAssetLoadMode assetLoadMode, string assetLoadStr) where T : UnityEngine.Object
+        {
+            switch (assetLoadMode)
+            {
+                case EAssetLoadMode.Resources:
+                    return LoadByResources<T>(assetLoadStr);
+                    break;
+                case EAssetLoadMode.AssetBundle:
+                    var key = StringUtils.SplitAtLastSlash(assetLoadStr);
+                    return LoadByAssetBundle<T>(key.Item1, key.Item2);
+                    break;
+                case EAssetLoadMode.AssetKey:
+                    return Load(assetLoadStr) as T;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(assetLoadMode), assetLoadMode, null);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 异步通用加载
+        /// </summary>
+        /// <param name="assetLoadMode">加载模式</param>
+        /// <param name="assetLoadStr">加载所使用的字符串
+        /// <para>Resources模式:Resource下的相对文件路径</para>
+        /// <para>AssetBundle模式:{AssetBundle名}/{对应资源名}</para>
+        /// <para>AssetKey模式:对应的AssetKey</para>
+        /// </param>
+        /// <param name="callback">Resources/AssetBundle使用的回调</param>
+        /// <param name="assetKeyModeCallBack">AssetKey模式使用的回调</param>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public void LoadAsync<T>(EAssetLoadMode assetLoadMode, string assetLoadStr, Action<T> callback = null,Action<Object> assetKeyModeCallBack = null) where T : UnityEngine.Object
+        {
+            switch (assetLoadMode)
+            {
+                case EAssetLoadMode.Resources:
+                    AsyncLoadByResources(assetLoadStr, callback);
+                    break;
+                case EAssetLoadMode.AssetBundle:
+                    var key = StringUtils.SplitAtLastSlash(assetLoadStr);
+                    AsyncLoadByAssetBundle(key.Item1,key.Item2,callback);
+                    break;
+                case EAssetLoadMode.AssetKey:
+                    LoadAsync(assetLoadStr, assetKeyModeCallBack);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(assetLoadMode), assetLoadMode, null);
             }
         }
     }

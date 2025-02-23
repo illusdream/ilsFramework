@@ -21,3 +21,10 @@ MonoBehaviour:
     TargetTypes:
     - AudioClip
     Ignore: []
+  - FilterName: "UI\u6D4B\u8BD5"
+    AssetKeyCollectionName: UIPanles
+    TargetFolders:
+    - Assets/Assets/Prefabs/UI/
+    TargetTypes:
+    - GameObject
+    Ignore: []
