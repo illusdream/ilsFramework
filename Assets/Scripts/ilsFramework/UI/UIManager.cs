@@ -102,7 +102,12 @@ namespace ilsFramework
 
         public void OnDestroy()
         {
-            
+            foreach (var uiPanel in uiPanels)
+            {
+                uiPanel.Value.OnDestroy();
+                GameObject.Destroy(uiPanel.Value.UIPanelObject);
+            }
+            uiPanels.Clear();
         }
 
         public void OnDrawGizmos()

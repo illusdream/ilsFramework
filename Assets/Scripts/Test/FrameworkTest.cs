@@ -35,13 +35,12 @@ namespace Test
         
         public void Awake()
         {
-            
+            _ = DebugManager.Instance;
         }
 
 
         public void Start()
         {
-            UIManager.Instance.GetUIPanel<TestUIPanel>().Open();
             // //测试同步加载  
 
             // //测试异步加载
@@ -226,9 +225,54 @@ namespace Test
         }
 
         [Button]
-        public void CloseUITest()
+        public void OpenDebugUI()
         {
-            UIManager.Instance.GetUIPanel<TestUIPanel>().Close();
+            UIManager.Instance.GetUIPanel<DebugUI>().Open();
+        }
+        [Button]
+        public void CloseDebugUI()
+        {
+            UIManager.Instance.GetUIPanel<DebugUI>().Close();
+        }
+
+        [Button]
+        public void EnterMessage()
+        {
+            UIManager.Instance.GetUIPanel<DebugUI>().EnterMessage();
+        }
+
+
+        [Button]
+        public void MethodRelectionTest()
+        {
+            var type = typeof(FrameworkTest);
+            
+            var methods = type.GetMethods();
+
+            foreach (var methodInfo in methods)
+            {
+                if (methodInfo.Name == "Method1")
+                {
+                    methodInfo.LogSelf();
+                    methodInfo.ReturnParameter.ParameterType.LogSelf();
+
+                    foreach (var parameterInfo in methodInfo.GetParameters())
+                    {
+                        parameterInfo.DefaultValue.LogSelf();
+                        parameterInfo.LogSelf();
+                    }
+                }
+            }
+        }
+
+        public void Method1()
+        {
+            
+        }
+
+        public void Method1(int a=1)
+        {
+            
         }
         private class Test
         {
