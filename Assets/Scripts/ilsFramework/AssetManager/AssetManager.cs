@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace ilsFramework
 {
-    public class AssetManager : ManagerSingleton<AssetManager>,IManager
+    public partial class AssetManager : ManagerSingleton<AssetManager>,IManager
     {
         [ShowInInspector]
         private ResourceLoader resourceLoader;
@@ -71,22 +71,47 @@ namespace ilsFramework
         {
             
         }
-
+        /// <summary>
+        /// 使用同步加载位于Resources文件夹的资源
+        /// </summary>
+        /// <param name="path">相对于Resources文件夹的相对路径</param>
+        /// <typeparam name="T">资源类型</typeparam>
+        /// <returns></returns>
         public T LoadByResources<T>(string path) where T : UnityEngine.Object
         {
             return resourceLoader.Load<T>(path);
         }
 
+        /// <summary>
+        /// 使用异步加载位于Resources文件夹的资源
+        /// </summary>
+        /// <param name="path">相对于Resources文件夹的相对路径</param>
+        /// <param name="callback">回调</param>
+        /// <typeparam name="T">资源类型</typeparam>
         public void AsyncLoadByResources<T>(string path,Action<T> callback) where T : UnityEngine.Object
         {
             resourceLoader.LoadAsync(path,callback);
         }
 
+        /// <summary>
+        /// 使用同步加载位于AssetBundle内的资源
+        /// </summary>
+        /// <param name="assetBundleName">AssetBundle包名</param>
+        /// <param name="assetName">资源名</param>
+        /// <typeparam name="T">资源的类型</typeparam>
+        /// <returns></returns>
         public T LoadByAssetBundle<T>(string assetBundleName, string assetName) where T : UnityEngine.Object
         {
             return assetBundleLoader.LoadAsset<T>(assetBundleName, assetName);
         }
 
+        /// <summary>
+        /// 使用异步加载位于AssetBundle内的资源
+        /// </summary>
+        /// <param name="assetBundleName">AssetBundle包名</param>
+        /// <param name="assetName">资源名</param>
+        /// <param name="callback">回调</param>
+        /// <typeparam name="T">资源的类型</typeparam>
         public void AsyncLoadByAssetBundle<T>(string assetBundleName, string assetName, Action<T> callback) where T : UnityEngine.Object
         {
             assetBundleLoader.LoadAssetAsync<T>(assetBundleName, assetName, callback);
@@ -97,7 +122,7 @@ namespace ilsFramework
         /// </summary>
         /// <param name="assetKey"></param>
         /// <returns></returns>
-        public Object Load(string assetKey)
+        public Object LoadByAssetKey(string assetKey)
         {
             Object result = null;
 
@@ -129,7 +154,7 @@ namespace ilsFramework
         /// </summary>
         /// <param name="assetKey"></param>
         /// <param name="callback"></param>
-        public void LoadAsync(string assetKey, Action<Object> callback)
+        public void AsyncLoadByAssetKey(string assetKey, Action<Object> callback)
         {
             var qResult = assetInfos.Where((info) => info.AssetKey == assetKey);
             if (qResult ==null)
@@ -178,7 +203,7 @@ namespace ilsFramework
                     return LoadByAssetBundle<T>(key.Item1, key.Item2);
                     break;
                 case EAssetLoadMode.AssetKey:
-                    return Load(assetLoadStr) as T;
+                    return LoadByAssetKey(assetLoadStr) as T;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(assetLoadMode), assetLoadMode, null);
@@ -212,7 +237,7 @@ namespace ilsFramework
                     AsyncLoadByAssetBundle(key.Item1,key.Item2,callback);
                     break;
                 case EAssetLoadMode.AssetKey:
-                    LoadAsync(assetLoadStr, assetKeyModeCallBack);
+                    AsyncLoadByAssetKey(assetLoadStr, assetKeyModeCallBack);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(assetLoadMode), assetLoadMode, null);

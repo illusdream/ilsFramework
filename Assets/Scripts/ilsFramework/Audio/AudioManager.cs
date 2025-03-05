@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using ilsFramework.Tools;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -43,9 +42,7 @@ namespace ilsFramework
         public float MainVolume => mainVolume;
         
         private AudioMixer mixer;
-
-
-
+        
         public void Init()
         {
             audioConfig = ConfigManager.Instance.GetConfig<AudioConfig>();
@@ -53,7 +50,7 @@ namespace ilsFramework
             audioclipBuffer = new Dictionary<string,AudioClip>();
             
             
-            mixer = ResourceManager.Instance.Load<AudioMixer>(audioConfig.AudioMixerPath);
+            mixer = AssetManager.Instance.Load<AudioMixer>(EAssetLoadMode.Resources,audioConfig.AudioMixerPath);
         }
         public void ForeachCurrentAssembly(Type[] types)
         {        
@@ -125,18 +122,29 @@ namespace ilsFramework
 
         }
 
+        /// <summary>
+        /// 设置主音量
+        /// </summary>
+        /// <param name="volume">声音大小(0-1间的浮点数)</param>
         public void SetMainVolume(float volume)
         {
             mainVolume = Mathf.Clamp01(volume); 
             float volumeValue = AudioTool.RemapVolumeTodB(mainVolume);
             AudioTool.MixerParamterSafeSetFloat(mixer,"Master",volumeValue);
         }
-
+        /// <summary>
+        /// 获取主音量大小
+        /// </summary>
+        /// <returns></returns>
         public float GetMainVolume()
         {
             return mainVolume;  
         }
-
+        /// <summary>
+        /// 设置声音通道音量大小
+        /// </summary>
+        /// <param name="channel">具体的声音通道</param>
+        /// <param name="volume">声音大小(0-1间的浮点数)</param>
         public void SetChannelVolume(string channel, float volume)
         {
             if (audioChannels.TryGetValue(channel, out AudioChannel audioChannel))
@@ -144,7 +152,11 @@ namespace ilsFramework
                 audioChannel.SetVolume(mixer,volume);
             }
         }
-
+        /// <summary>
+        /// 获取声音通道音量大小
+        /// </summary>
+        /// <param name="channel">具体的声音通道</param>
+        /// <returns></returns>
         public float GetChannelVolume(string channel)
         {
             if (audioChannels.TryGetValue(channel, out AudioChannel audioChannel))
@@ -154,6 +166,11 @@ namespace ilsFramework
             return 0;
         }
 
+        /// <summary>
+        /// 播放音频
+        /// </summary>
+        /// <param name="channel">要使用的声音通道</param>
+        /// <param name="soundData">音频数据</param>
         public void Play(string channel, SoundData soundData)
         {
             if (audioChannels.TryGetValue(channel,out var _channel))
@@ -162,6 +179,10 @@ namespace ilsFramework
             }
         }
 
+        /// <summary>
+        /// 关闭该通道所有声音播放
+        /// </summary>
+        /// <param name="channel">要关闭的声音通道</param>
         public void Stop(string  channel)
         {
             if (audioChannels.TryGetValue(channel,out var _channel))
@@ -170,6 +191,9 @@ namespace ilsFramework
             }
         }
 
+        /// <summary>
+        /// 关闭所有声音通道播放
+        /// </summary>
         public void StopAll()
         {
             foreach (var channel in audioChannels.Values)

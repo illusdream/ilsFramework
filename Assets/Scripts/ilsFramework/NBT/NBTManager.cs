@@ -15,7 +15,7 @@ namespace ilsFramework
             List<Type> typesToSerialize = new List<Type>();
             foreach (var type in types)
             {
-                if (typeof(TagSerializer<>).IsAssignableFrom(type)&& !type.IsInterface && !type.IsAbstract)
+                if (typeof(ITagSerializer).IsAssignableFrom(type)&& !type.IsInterface && !type.IsAbstract)
                 {
                     typesToSerialize.Add(type);
                 }

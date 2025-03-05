@@ -68,6 +68,7 @@ namespace ilsFramework
         //先这样写了，要是太卡了我再想别的位置
         private static void Listener_ReloadDomin()
         {
+            FileUtils.AssetFolder_CheckOrCreateFolder("Resources/ilsFramework/Configs");
             ConfigManager.CheckFrameworkConfig();
             
             Dictionary<Type, ConfigTargetInfo> configsUsed = GetUsedConfigs();

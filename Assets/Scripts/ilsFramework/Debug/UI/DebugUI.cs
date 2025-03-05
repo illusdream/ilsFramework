@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,16 +21,18 @@ namespace ilsFramework
         
         private GameObject LogMessageShow;
         
+        private Queue<GameObject> LogMessageList;
+        
+        private DebugConfig debugConfig;
+        
         public override void InitUIPanel()
         {
             Application.logMessageReceived += HandleUnityLog;
-            
+            LogMessageList = new Queue<GameObject>();
             
             LogMessageShow = AssetManager.Instance.Load<GameObject>(EAssetLoadMode.Resources, "ilsFramework/Prefab/UI/DebugUI_LogMessage");
-            
-            (contentTransform == null).LogSelf();
-            inputField.LogSelf();
-            LogMessageShow.LogSelf();
+
+            debugConfig = ConfigManager.Instance.GetConfig<DebugConfig>();
             
             base.InitUIPanel();
         }
@@ -52,9 +55,36 @@ namespace ilsFramework
             var instance = GameObject.Instantiate(LogMessageShow, contentTransform);
             if (instance.GetComponentInChildren<TMP_Text>() is { } text)
             {
+                switch (type)
+                {
+                    case LogType.Error:
+                        logMessage =  ConvertTextColor(Color.red, logMessage);
+                        break;
+                    case LogType.Assert:
+                        break;
+                    case LogType.Warning:
+                        logMessage =  ConvertTextColor(Color.yellow, logMessage);
+                        break;
+                    case LogType.Log:
+                        break;
+                    case LogType.Exception:
+                        logMessage =  ConvertTextColor(Color.red, logMessage);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                }
                 text.text = logMessage;
             }
 
+            LogMessageList.Enqueue(instance);
+            while (LogMessageList.Count > debugConfig.MaxDebugUIStoreLogCount)
+            {
+                if (LogMessageList.TryDequeue(out var result))
+                {
+                    GameObject.Destroy(result);
+                }
+            }
+            
             MonoManager.Instance.StartCoroutine(MoveToUnder());
             
             
@@ -70,15 +100,23 @@ namespace ilsFramework
 
         public void EnterMessage()
         {
-            //inputField.text.LogSelf();
-            DebugManager.Instance.TryExecuteCommand(inputField.text);
+            if (!DebugManager.Instance.TryExecuteCommand(inputField.text))
+            {
+               inputField.text.LogSelf();
+            }
             inputField.text = "";
         }
 
-        public IEnumerator MoveToUnder()
+        private IEnumerator MoveToUnder()
         {
             yield return new WaitForEndOfFrame();
             scrollRect.verticalNormalizedPosition = -0.1f;
+        }
+
+        private string ConvertTextColor(Color color, string text)
+        {
+            var _color ="#"+ ColorUtility.ToHtmlStringRGB(color);
+            return $"<color={_color}>{text}</color>"; 
         }
     }
 }

@@ -12,10 +12,11 @@ namespace ilsFramework
         
         private Dictionary<string,CommendContainer> commands;
         
+        private DebugConfig config;
+        
         public void Init()
         {
-            Application.logMessageReceived += HandleUnityLog;
-            
+            config = ConfigManager.Instance.GetConfig<DebugConfig>();
             parsers = new Dictionary<Type, IParser>();
             commands = new Dictionary<string, CommendContainer>();
         }
@@ -72,18 +73,6 @@ namespace ilsFramework
             
         }
         
-        private void HandleUnityLog(string log, string stackTrace, LogType type)
-        {
-            string color = type switch
-            {
-                LogType.Error => "#FF0000",
-                LogType.Warning => "#FFFF00",
-                LogType.Exception => "#FF00FF",
-                _ => "#FFFFFF"
-            };
-            log = $"\n{log}";
-        }
-
         public bool TryGetParser(Type type,out IParser parser)
         {
             return parsers.TryGetValue(type, out parser);
@@ -94,13 +83,35 @@ namespace ilsFramework
             return commands.TryGetValue(commendName, out commendContainer);
         }
 
-        public void TryExecuteCommand(string command)
+        public bool TryExecuteCommand(string command)
         {
             string[] commandNameAndArgs = command.Split(' ');
             if (TryGetCommendContainer(commandNameAndArgs[0], out CommendContainer commendContainer))
             {
-                commendContainer.Execute(commandNameAndArgs.Skip(1).ToArray());
+                if (commendContainer.Execute(commandNameAndArgs.Skip(1).ToArray()))
+                {
+                    
+                }
+                else
+                {
+                    $"Commend: {command} 执行失败".ErrorSelf();
+                }
+                return true;
             }
+
+            return false;
+        }
+
+        public List<(string, CommendContainer)> GetAllCommands()
+        {
+            List<(string, CommendContainer)> list = new List<(string, CommendContainer)>();
+
+            foreach (var container in commands)
+            {
+                list.Add((container.Key, container.Value));
+            }
+            
+            return list;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ilsFramework
                    {
                        continue;
                    }
-                   IDtoTagSerializers.Add(type.FullName,instance);
+                   IDtoTagSerializers.Add(instance.TargetType.FullName,instance);
                    TypeToTagSerializers.Add(instance.TargetType, instance);
                }
            }

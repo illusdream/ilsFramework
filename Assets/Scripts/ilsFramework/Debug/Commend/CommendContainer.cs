@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace ilsFramework
 {
@@ -9,7 +10,7 @@ namespace ilsFramework
         private List<CommendInvoker> commendInvokers;
         
         private ICommendSet commendSet;
-
+        
         public CommendContainer(DebugCommendAttribute commendAttribute, Type targetType)
         {
             commendInvokers = new List<CommendInvoker>();
@@ -27,8 +28,9 @@ namespace ilsFramework
         }
 
 
-        public void Execute(string[] commandArgs)
+        public bool Execute(string[] commandArgs)
         {
+            bool isExecuted = false;
             List<CommendInvoker> currectCommendInvokers = new List<CommendInvoker>(commendInvokers);
             List<CommendInvoker> resultCommendInvokers = new List<CommendInvoker>();
             //开始解析
@@ -56,6 +58,7 @@ namespace ilsFramework
             {
                 if (invoker.TryInvoke(commendSet))
                 {
+                    isExecuted = true;
                     break;
                 }
             }
@@ -64,6 +67,28 @@ namespace ilsFramework
             {
                 invoker.Reset();
             }
+
+            return isExecuted;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var commendInvoker in commendInvokers)
+            {
+                sb.AppendLine("\t"+commendInvoker+"\n");
+            }
+            return sb.ToString();
+        }
+
+        public List<string> ToStringList()
+        {
+            List<string> lines = new List<string>();
+            foreach (var commendInvoker in commendInvokers)
+            {
+                lines.Add(commendInvoker.ToString());
+            }
+            return lines;
         }
     }
 }

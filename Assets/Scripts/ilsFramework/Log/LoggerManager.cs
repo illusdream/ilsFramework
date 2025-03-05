@@ -125,7 +125,15 @@ namespace ilsFramework
             }
             return $"<color={color}>{message}</color>"; 
         }
-
+        /// <summary>
+        /// 发送Console消息(Log)
+        /// </summary>
+        /// <param name="message">要发送的Message</param>
+        /// <param name="context">从哪个Mono发送的</param>
+        /// <param name="showTime">是否显示发送时间</param>
+        /// <param name="showThreadID">是否显示线程ID</param>
+        /// <param name="showStackTrace">是否显示堆栈消息</param>
+        /// <param name="colorConvert">颜色设置</param>
         public void Log([CanBeNull] object message, Object context = null, bool showTime = false, bool showThreadID = false, bool showStackTrace = false, string colorConvert = null)
         {
             if (!DebugLogEnable || !Application.isEditor)
@@ -135,7 +143,15 @@ namespace ilsFramework
             string finalMessage = BuildLogMessage(message,showTime,showThreadID,showStackTrace,colorConvert);
             Debug.Log(finalMessage,context);
         }
-
+        /// <summary>
+        /// 发送警告消息
+        /// </summary>
+        /// <param name="message">要发送的Message</param>
+        /// <param name="context">从哪个Mono发送的</param>
+        /// <param name="showTime">是否显示发送时间</param>
+        /// <param name="showThreadID">是否显示线程ID</param>
+        /// <param name="showStackTrace">是否显示堆栈消息</param>
+        /// <param name="colorConvert">颜色设置</param>
         public void LogWarning([CanBeNull] object message, Object context = null, bool showTime = false, bool showThreadID = false, bool showStackTrace = false,
             string colorConvert = null)
         {
@@ -146,7 +162,15 @@ namespace ilsFramework
             string finalMessage = BuildLogMessage(message,showTime,showThreadID,showStackTrace,colorConvert);
             Debug.LogWarning(finalMessage,context);
         }
-
+        /// <summary>
+        /// 发送错误消息
+        /// </summary>
+        /// <param name="message">要发送的Message</param>
+        /// <param name="context">从哪个Mono发送的</param>
+        /// <param name="showTime">是否显示发送时间</param>
+        /// <param name="showThreadID">是否显示线程ID</param>
+        /// <param name="showStackTrace">是否显示堆栈消息</param>
+        /// <param name="colorConvert">颜色设置</param>
         public void LogError([CanBeNull] object message, Object context = null, bool showTime = false, bool showThreadID = false, bool showStackTrace = false,
             string colorConvert = null)
         {

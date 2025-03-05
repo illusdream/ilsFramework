@@ -1,19 +1,19 @@
 using System;
 using System.Reflection;
+using UnityEngine;
 
 namespace ilsFramework
 {
-    public class ConfigUtils
+    public static class Config
     {
-        public T GetConfig<T>() where T : ConfigScriptObject
+        public static T GetConfig<T>() where T : ConfigScriptObject
         {
-            var attributes = typeof(T).GetCustomAttribute(typeof (AutoBuildOrLoadConfig));
-            if (attributes != null)
-            {
-                
-            }
+            return ConfigManager.Instance.GetConfig<T>();
+        }
 
-            return null;
+        public static FrameworkConfig GetFrameworkConfig()
+        {
+            return Resources.Load<FrameworkConfig>(ConfigManager.RunTimeFrameworkConfigPath);
         }
     }
 }

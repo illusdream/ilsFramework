@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Cysharp.Threading.Tasks;
 using SQLite4Unity3d;
 using UnityEditor;
 using UnityEngine;
@@ -27,6 +28,7 @@ namespace ilsFramework
                 return ms.ToArray();
             }
         }
+        
 
         public static NBTCompound Deserialize(byte[] data)
         {
@@ -98,6 +100,20 @@ namespace ilsFramework
             
         }
 
+        public static async UniTask<NBTCompound> OpenNBTFileAsync(string path)
+        {
+            try
+            {
+                var sr =await File.ReadAllBytesAsync(path + ".Lnbt");
+                return NBT.Deserialize(sr);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+        
+
         public static void SaveNBTFile(NBTCompound root, string path)
         {
             using (FileStream fs = File.Create(path + ".Lnbt"))
@@ -105,6 +121,13 @@ namespace ilsFramework
                 var nbt = Serialize(root);
                 fs.Write(nbt, 0, nbt.Length);
             }
+        }
+
+        public static async UniTask SaveNBTFileAsync(NBTCompound root, string path)
+        {
+            await using FileStream fs = File.Create(path + ".Lnbt");
+            var nbt = Serialize(root);
+            await fs.WriteAsync(nbt, 0, nbt.Length);
         }
     }
 }

@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using Unity.Mathematics;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace ilsFramework.Tools
+namespace ilsFramework
 {
     public static class AudioTool
     {

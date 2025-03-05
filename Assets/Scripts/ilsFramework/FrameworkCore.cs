@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -19,25 +20,31 @@ namespace ilsFramework
 
         private List<(string, Action<GameObject>)> emptyGameObjectCallBacks;
         private GameObject otherGameObject;
+        
+        private FrameworkConfig frameworkConfig;
+        
         public FrameworkCore()
         {
             innerManagers = new Dictionary<Type, IManager>();
             managerContainerObjects = new Dictionary<Type, GameObject>();
             managerList = new LinkedList<IManager>();
-
             emptyGameObjectCallBacks = new List<(string, Action<GameObject>)>();
-
-
-
         }
 
+
+        [RuntimeInitializeOnLoadMethod]
+        private static void InitFramework()
+        {
+            _ = FrameworkCore.Instance;
+        }
+        
         private void Awake()
         {
+            frameworkConfig = Config.GetFrameworkConfig();
             AssemblyForeach();
             GameObject other = new GameObject("Other");
             other.transform.parent = transform;
             otherGameObject = other;
-
 
             foreach (var emptyGameObjectCallBack in emptyGameObjectCallBacks)
             {
@@ -110,10 +117,11 @@ namespace ilsFramework
         {
             var types = Assembly.GetExecutingAssembly().GetTypes();
             List<IAssemblyForeach> list = new List<IAssemblyForeach>();
+            List<(IManager,int)> allManagers = new List<(IManager,int)>();
             //找出对应需要遍历程序集
             foreach (var type in types)
             {
-                if (typeof(IAssemblyForeach).IsAssignableFrom(type) && typeof(IManager).IsAssignableFrom(type))
+                if (typeof(IManager).IsAssignableFrom(type) && !type.IsAbstract && !type.IsInterface)
                 {
                     object manager = Activator.CreateInstance(type);
 
@@ -124,31 +132,11 @@ namespace ilsFramework
                     }
 
                     IManager Im = manager as IManager;
+                    IManagerSingleton IMS = manager as IManagerSingleton;
                     IAssemblyForeach Ia = manager as IAssemblyForeach;
                     if (Im != null)
                     {
-                        //加入链表
-                        LinkedListNode<IManager> current = managerList.First;
-                        while (current != null)
-                        {
-
-                            if (Im.Priority > current.Value.Priority)
-                            {
-                                break;
-                            }
-
-                            current = current.Next;
-                        }
-                        if (current != null)
-                        {
-
-                            managerList.AddBefore(current, Im);
-                        }
-                        else
-                        {
-
-                            managerList.AddLast(Im);
-                        }
+                        allManagers.Add((Im,frameworkConfig.GetManagerUpdateIndex(type)));
 
                         //将Manager作为一个子物体存在FrameworkCore下？这样利于调试
                         GameObject managerContianer = new GameObject(manager.GetType().Name);
@@ -158,10 +146,7 @@ namespace ilsFramework
                         //加入字典
                         innerManagers.TryAdd(type, Im);
                         managerContainerObjects.TryAdd(type, managerContianer);
-
-
-
-                        Im.Init();
+                        
                     }
 
                     if (Ia != null)
@@ -170,8 +155,16 @@ namespace ilsFramework
                     }
                 }
             }
+            //排序Manger，并初始化
+            allManagers.Sort((a, b) => a.Item2.CompareTo(b.Item2));
+            foreach (var manager in allManagers)
+            {
+                managerList.AddLast(manager.Item1);
+                manager.Item1.Init();
+                Debug.Log(manager.Item1.GetType().Name);
+            }
+            
             //找出需要遍历的类型
-
             foreach (var iAssemblyForeach in list)
             {
                 iAssemblyForeach.ForeachCurrentAssembly(types);
@@ -204,26 +197,8 @@ namespace ilsFramework
 
             //加入链表
             LinkedListNode<IManager> current = managerList.First;
-            while (current != null)
-            {
 
-                if (manager.Priority > current.Value.Priority)
-                {
-                    break;
-                }
-
-                current = current.Next;
-            }
-            if (current != null)
-            {
-
-                managerList.AddBefore(current, manager);
-            }
-            else
-            {
-
-                managerList.AddLast(manager);
-            }
+            managerList.AddLast(manager);
 
             //将Manager作为一个子物体存在FrameworkCore下？这样利于调试
             GameObject managerContianer = new GameObject(manager.GetType().Name);

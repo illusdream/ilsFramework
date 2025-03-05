@@ -8,8 +8,9 @@ namespace ilsFramework
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable]
-    public class ManagerSingleton<T> where T : class, IManager, new()
+    public class ManagerSingleton<T> : IManagerSingleton where T : class, IManager, new()
     {
+        public int ManagerUpdateIndex { get; set; }
         //提供一个快速的访问方式从FrameworkCore获取管理类
         public static T Instance
         {
@@ -30,5 +31,7 @@ namespace ilsFramework
                 return _containerObject;
             }
         }
+
+
     }
 }

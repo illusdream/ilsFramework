@@ -77,7 +77,7 @@ namespace ilsFramework
             //重新构建AssetCollection引用文件
             RebuildAssetCollections(needReBuildAssetCollections, assetDataBaseConnection);
             assetDataBaseConnection.Close();
-        }
+        } 
         /// <summary>
         /// 处理Import 主要是新增的Asset 
         /// </summary>

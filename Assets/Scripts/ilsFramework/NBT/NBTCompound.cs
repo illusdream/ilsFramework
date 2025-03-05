@@ -258,10 +258,15 @@ namespace ilsFramework
         public bool TryGet<T>(string key, out T value)
         {
             value = default;
-            if (children.TryGetValue(key,out var o) && (o is T value1 || CheckOutValue<T>(o, out value1)))
+            
+            if (children.TryGetValue(key,out var o))
             {
-                value = value1;
-                return true;
+                if (o is T value1|| (o is NBTCompound && CheckOutValue<T>(o, out  value1)))
+                {
+                    value = value1;
+                    return true;
+                }
+
             }
             return false;
         }
@@ -329,11 +334,11 @@ namespace ilsFramework
             {
                 if (child.Value is NBTCompound compound)
                 {
-                    sb.Append($"[key: {child.Key}] value: {compound.ToString(1)}" );
+                    sb.Append($"[key: {child.Key}][Type:{nameof(NBTCompound)}] value: {compound.ToString(1)}" );
                 }
                 else
                 {
-                    sb.AppendLine($"[key: {child.Key}] value: {child.Value}");
+                    sb.AppendLine($"[key: {child.Key}][Type:{nameof(child.Value)}] value: {child.Value}");
                 }
             }
             return sb.ToString();

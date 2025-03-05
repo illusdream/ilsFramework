@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 
 using UnityEngine;
 
 #if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
+using UnityEditor;
 #endif
 
 
@@ -22,8 +24,8 @@ namespace ilsFramework
         [HideLabel] 
         [SerializeField]
         [ShowInInspector]
-        [ListDrawerSettings(HideAddButton = true,HideRemoveButton = false,DraggableItems = true,ShowFoldout = false,ShowIndexLabels = false)]
-#if true
+        [ListDrawerSettings(HideAddButton = true,HideRemoveButton = true,DraggableItems = true,ShowFoldout = true,ShowIndexLabels = false)]
+#if UNITY_EDITOR
         [OnCollectionChanged("OnSortListChanged")]
 #endif
         [PropertyOrder(int.MaxValue)]
@@ -31,8 +33,14 @@ namespace ilsFramework
         private Dictionary<string,int> ConfigViewSort;
         
         
-        
-        
+        [LabelText("Manager轮询/更新顺序")]
+        [HideLabel] 
+        [SerializeField]
+        [ShowInInspector]
+        [ListDrawerSettings(HideAddButton = true,HideRemoveButton = true,DraggableItems = true,ShowFoldout = true,ShowIndexLabels = false)]
+        [PropertyOrder(int.MaxValue-1)]
+        private List<ReadOnlyString> ManagersUpdateSort;
+        private Dictionary<string,int> Dict_UpdateSort;
 
         public FrameworkConfig()
         {
@@ -42,6 +50,31 @@ namespace ilsFramework
             {
                 ConfigViewSort[ConfigsViewSort[i].Value] =i;
             }
+            
+            ManagersUpdateSort = new List<ReadOnlyString>();
+            //遍历程序集，查找所有Manager
+#if UNITY_EDITOR
+            ManagersUpdateSort = TypeCache.GetTypesDerivedFrom(typeof(IManager)).Select((type)=>new ReadOnlyString(type.FullName)).ToList();
+            
+            List<string> NeedPreSortManager = new List<string>()
+            {
+                "ilsFramework.ConfigManager", "ilsFramework.AssetManager", "ilsFramework.MonoManager"
+            };
+            
+            ManagersUpdateSort = ManagersUpdateSort.OrderBy(s=>!NeedPreSortManager.Contains(s.Value))
+                .ToList();
+#endif
+            
+            foreach (var readOnlyString in ManagersUpdateSort)
+            {
+                Debug.Log(readOnlyString.Value);
+            }
+            
+            Dict_UpdateSort = new Dictionary<string, int>();
+            for (int i = 0; i < ManagersUpdateSort.Count; i++)
+            {
+                Dict_UpdateSort[ManagersUpdateSort[i].Value] = i;
+            }
         }
 
         public void OnEnable()
@@ -50,6 +83,12 @@ namespace ilsFramework
             for (int i = 0; i < ConfigsViewSort.Count; i++)
             {
                 ConfigViewSort[ConfigsViewSort[i].Value] =i;
+            }
+            
+            Dict_UpdateSort = new Dictionary<string, int>();
+            for (int i = 0; i < ManagersUpdateSort.Count; i++)
+            {
+                Dict_UpdateSort[ManagersUpdateSort[i].Value] = i;
             }
         }
 
@@ -70,6 +109,17 @@ namespace ilsFramework
             ConfigViewSort[configName] = ConfigsViewSort.Count;
         }
 
+        public void ReSortConfigShow()
+        {
+            ConfigsViewSort = ConfigsViewSort.OrderBy(s=>s.Value != "FrameworkConfig").ToList();
+            
+            ConfigViewSort = new Dictionary<string, int>();
+            for (int i = 0; i < ConfigsViewSort.Count; i++)
+            {
+                ConfigViewSort[ConfigsViewSort[i].Value] =i;
+            }
+        }
+        
         public void OnValidate()
         {
 
@@ -85,6 +135,10 @@ namespace ilsFramework
         }
 #endif
 
+        public int GetManagerUpdateIndex(Type mangerType)
+        {
+            return Dict_UpdateSort.GetValueOrDefault(mangerType.FullName, -1);
+        }
         
         [Serializable]
         [InlineEditor(InlineEditorObjectFieldModes.Hidden)]
@@ -100,6 +154,8 @@ namespace ilsFramework
             }
 
 
+            
+            
             public static implicit operator ReadOnlyString(string value)
             {
                 return new ReadOnlyString(value);

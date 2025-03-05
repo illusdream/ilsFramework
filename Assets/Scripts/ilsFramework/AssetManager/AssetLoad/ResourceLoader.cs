@@ -9,7 +9,8 @@ namespace ilsFramework
     public class ResourceLoader
     {
         private Dictionary<string, Object> _resources;
-
+        
+        
         public void Init()
         {
             _resources = new Dictionary<string, Object>();
@@ -66,5 +67,15 @@ namespace ilsFramework
             }
 
         }
+
+        public void Unload(string assetKey)
+        {
+            if (_resources.TryGetValue(assetKey, out var resource))
+            {
+                Resources.UnloadAsset(resource);
+                _resources.Remove(assetKey);
+            }
+        }
+        
     }
 }

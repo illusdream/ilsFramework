@@ -35,7 +35,7 @@ namespace Test
         
         public void Awake()
         {
-            _ = DebugManager.Instance;
+            //_ = DebugManager.Instance;
         }
 
 
@@ -71,7 +71,7 @@ namespace Test
         {
             SoundData data = new SoundData()
             {
-                clip = (AudioClip)AssetManager.Instance.Load(Audio.ScaryVFX)
+                clip = (AudioClip)AssetManager.Instance.LoadByAssetKey(Audio.ScaryVFX)
             };
             AudioManager.Instance.Play(AudioChannelName.Sound, data);
         }
@@ -110,7 +110,7 @@ namespace Test
         [Button]
         public void TestLog()
         {
-           "测试".LogSelf(this.gameObject,colorConvert:LogColor.Magenta,showStackTrace:true);
+           "测试".ErrorSelf(this.gameObject,showStackTrace:true);
         }
        
 #if UNITY_EDITOR
@@ -128,7 +128,7 @@ namespace Test
         }
 #endif
         [Button]
-        public void NBTTestWrite()
+        public void NBTTestWrite(bool useAsync)
         {
             
                 NBTCompound compound = new NBTCompound();
@@ -155,18 +155,37 @@ namespace Test
                     new Vector2(4,4),
                     new Vector2(5,5),
                 };
+
+                Vector2Int v2i = new Vector2Int(13, 154);
+                compound.Set("Vector2Int",v2i);
+                
                 compound.SetList("List",list);
-            NBT.SaveNBTFile(compound,"F:\\Unity\\ilsFramework\\1111\\NBTTest");
+                if (!useAsync)
+                {
+                    NBT.SaveNBTFile(compound,"F:\\Unity\\ilsFramework\\NBTTest");
+                }
+                else
+                {
+                    NBT.SaveNBTFileAsync(compound,"F:\\Unity\\ilsFramework\\NBTTest");
+                }
 
         }
         [Button]
-        public void NBTTestRead()
+        public async void NBTTestRead(bool useAsync)
         {
             Stopwatch sw = new Stopwatch();
             // 打开流并读取。
             
             sw.Start();
-            var nbt = NBT.OpenNBTFile("F:\\Unity\\ilsFramework\\1111\\NBTTest");
+            NBTCompound nbt = null; 
+            if (!useAsync)
+            {
+                nbt = NBT.OpenNBTFile("F:\\Unity\\ilsFramework\\NBTTest");
+            }
+            else
+            {
+                nbt = await NBT.OpenNBTFileAsync("F:\\Unity\\ilsFramework\\NBTTest");
+            }
             
             nbt.LogSelf();
 
@@ -182,7 +201,11 @@ namespace Test
                    //vector2.LogSelf();
                 }
             }
-            
+
+            if (nbt.TryGet("Vector2Int",out Vector2Int vid))
+            {
+                vid.LogSelf();
+            }
             
             sw.Stop();
             sw.ElapsedMilliseconds.LogSelf();
@@ -254,7 +277,6 @@ namespace Test
                 if (methodInfo.Name == "Method1")
                 {
                     methodInfo.LogSelf();
-                    methodInfo.ReturnParameter.ParameterType.LogSelf();
 
                     foreach (var parameterInfo in methodInfo.GetParameters())
                     {
@@ -274,9 +296,25 @@ namespace Test
         {
             
         }
+
+        private int count = 0;
+
+        [Button]
+        public void DebugUILogTest(int times)
+        {
+            for (int i = 0; i < times; i++)
+            {
+                count++.LogSelf();
+            }
+        }
         private class Test
         {
             
+        }
+        [Button]
+        public void LoadAssetTest()
+        {
+            GameObject.Instantiate(Asset.Load<GameObject>(EAssetLoadMode.Resources, "ilsFramework/Prefab/UI/DebugUI"));
         }
     }
 }

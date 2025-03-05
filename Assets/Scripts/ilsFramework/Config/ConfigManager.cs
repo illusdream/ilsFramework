@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -14,9 +15,11 @@ namespace ilsFramework
     /// </summary>
     public class ConfigManager : ManagerSingleton<ConfigManager>,IManager
     {
+        [ShowInInspector]
         private Dictionary<Type, object> _configs;
         
-        public const string FrameworkConfigPath = "Assets/Resources/ilsFramework/Configs/FrameworkConfig.asset";
+        public const string EditorFrameworkConfigPath = "Assets/Resources/ilsFramework/Configs/FrameworkConfig.asset";
+        public const string RunTimeFrameworkConfigPath = "ilsFramework/Configs/FrameworkConfig";
         public void Init()
         {
             _configs = new Dictionary<Type, object>();
@@ -79,11 +82,11 @@ namespace ilsFramework
 #if UNITY_EDITOR
         public static void CheckFrameworkConfig()
         {
-            FrameworkConfig frameworkConfig = AssetDatabase.LoadAssetAtPath<FrameworkConfig>(FrameworkConfigPath);
+            FrameworkConfig frameworkConfig = AssetDatabase.LoadAssetAtPath<FrameworkConfig>(EditorFrameworkConfigPath);
             if (frameworkConfig == null)
             {
                 frameworkConfig = ScriptableObject.CreateInstance<FrameworkConfig>();
-                AssetDatabase.CreateAsset(frameworkConfig, FrameworkConfigPath);
+                AssetDatabase.CreateAsset(frameworkConfig, EditorFrameworkConfigPath);
             }
             AssetDatabase.Refresh();
         }

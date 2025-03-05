@@ -72,11 +72,18 @@ namespace ilsFramework
             sceneEventCenterCore.BoradCastMessage(SceneChanged,args);
         }
 
+        /// <summary>
+        /// 向场景变化时，添加监听器
+        /// </summary>
+        /// <param name="action">监听方法，具体的EventArgs为:<see cref="SceneChangedEventArgs"/></param>
         public void SceneChanged_AddListener(Action<EventArgs> action)
         {
             sceneEventCenterCore.AddListener(SceneChanged, action);
         }
-
+        /// <summary>
+        /// 向场景变化时，移除监听器
+        /// </summary>
+        /// <param name="action">监听方法，具体的EventArgs为:<see cref="SceneChangedEventArgs"/></param>
         public void SceneChanged_RemoveListener(Action<EventArgs> action)
         {
             sceneEventCenterCore.RemoveListener(SceneChanged, action);
@@ -92,11 +99,18 @@ namespace ilsFramework
             sceneEventCenterCore.BoradCastMessage(SceneLoaded,args);
         }
 
+        /// <summary>
+        /// 向场景加载时，添加监听器
+        /// </summary>
+        /// <param name="action">监听方法，具体的EventArgs为:<see cref="SceneLoadedEventArgs"/></param>
         public void SceneLoaded_AddListener(Action<EventArgs> action)
         {
             sceneEventCenterCore.AddListener(SceneLoaded, action);
         }
-
+        /// <summary>
+        /// 向场景加载时，移除监听器
+        /// </summary>
+        /// <param name="action">监听方法，具体的EventArgs为:<see cref="SceneLoadedEventArgs"/></param>
         public void SceneLoaded_RemoveListener(Action<EventArgs> action)
         {
             sceneEventCenterCore.RemoveListener(SceneLoaded, action);
@@ -106,18 +120,24 @@ namespace ilsFramework
         #endregion
         
         #region Unloaded
-
+    
         private void SceneManagerOnSceneUnloaded(Scene arg0)
         {
             SceneUnloadedEventArgs args = new SceneUnloadedEventArgs(arg0);
             sceneEventCenterCore.BoradCastMessage(SceneUnloaded,args);
         }
-
+        /// <summary>
+        /// 向场景卸载时，添加监听器
+        /// </summary>
+        /// <param name="action">监听方法，具体的EventArgs为:<see cref="SceneUnloadedEventArgs"/></param>
         public void SceneUnloaded_AddListener(Action<EventArgs> action)
         {
             sceneEventCenterCore.AddListener(SceneUnloaded, action);
         }
-
+        /// <summary>
+        /// 向场景卸载时，添加监听器
+        /// </summary>
+        /// <param name="action">监听方法，具体的EventArgs为:<see cref="SceneUnloadedEventArgs"/></param>
         public void SceneUnloaded_RemoveListener(Action<EventArgs> action)
         {
             sceneEventCenterCore.RemoveListener(SceneUnloaded, action);

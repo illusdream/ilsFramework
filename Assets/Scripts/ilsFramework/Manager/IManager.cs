@@ -9,11 +9,6 @@ namespace ilsFramework
     public interface IManager
     {
         /// <summary>
-        /// 管理类的优先级，高优先级优先轮询，调用
-        /// </summary>
-        public  int Priority => 0;
-
-        /// <summary>
         /// 初始化模块
         /// </summary>
         void Init();

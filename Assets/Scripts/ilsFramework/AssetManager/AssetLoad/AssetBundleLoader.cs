@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Video;
@@ -84,7 +85,29 @@ namespace ilsFramework
             if (_loadedAssetBundles.TryGetValue(bundleName, out var assetBundle))
             {
                 assetBundle.Unload(unloadAllLoadedObjects);
+                
+                foreach (var dependency in _mainManifest.GetAllDependencies(bundleName))
+                {
+                    _referenceCounts[dependency]--;
+                    if (_referenceCounts[dependency] == 0)
+                    {
+                        UnloadAssetBundle(bundleName, unloadAllLoadedObjects);
+                        _referenceCounts.Remove(dependency);
+                    }
+                }
+                
             }
+        }
+
+        public void UnLoadUnUsedAssetBundle(bool unloadAllLoadedObjects)
+        {
+            var needRemove = _referenceCounts.Where((kvp)=>kvp.Value==0).Select((kvp)=>kvp.Key);
+
+            foreach (var key in needRemove)
+            {
+                UnloadAssetBundle(key,unloadAllLoadedObjects);
+            }
+            
         }
 
         public void LoadAssetBundleAsync(string bundleName, Action callback = null)

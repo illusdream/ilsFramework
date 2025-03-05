@@ -42,6 +42,13 @@ namespace ilsFramework.Editor
                 var instance = new ConfigContainer(path);
                 treeList.Add((keyName,FrameworkConfig.GetConfigSortOrder(keyName),instance));
             }
+            FrameworkConfig.ReSortConfigShow();
+            for (int i = 0; i < treeList.Count; i++)
+            {
+                var t = treeList[i];
+                treeList[i] = (t.Item1, FrameworkConfig.GetConfigSortOrder(t.Item1), t.Item3);
+            }
+            
             treeList.Sort((a,b)=>a.Item2.CompareTo(b.Item2));
             foreach (var valueTuple in treeList)
             {

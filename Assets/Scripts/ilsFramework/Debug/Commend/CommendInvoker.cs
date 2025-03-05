@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Text;
 
 namespace ilsFramework
 {
@@ -60,5 +61,16 @@ namespace ilsFramework
             return false;
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var parameterInfo in _methodInfo.GetParameters())
+            {
+                string defaultValue = parameterInfo.HasDefaultValue ? $" = {parameterInfo.DefaultValue}" : string.Empty;
+                sb.Append($"[{parameterInfo.ParameterType.Name} {parameterInfo.Name}{defaultValue}] ");
+            }
+            return sb.ToString();
+        }
     }
 }
