@@ -30,14 +30,14 @@ namespace ilsFramework
         
         public virtual void Pause()
         {
-            UIPanelCanvasGroup.blocksRaycasts = true;
-            UIPanelCanvasGroup.interactable = true;
+            UIPanelCanvasGroup.blocksRaycasts = false;
+            UIPanelCanvasGroup.interactable = false;
         }
 
         public virtual void Resume()
         {
-            UIPanelCanvasGroup.blocksRaycasts = false;
-            UIPanelCanvasGroup.interactable = false;
+            UIPanelCanvasGroup.blocksRaycasts = true;
+            UIPanelCanvasGroup.interactable = true;
         }
 
         public virtual void Update()
