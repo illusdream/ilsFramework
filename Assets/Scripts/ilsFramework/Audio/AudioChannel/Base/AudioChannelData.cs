@@ -8,8 +8,6 @@ namespace ilsFramework
     [InlineEditor(InlineEditorObjectFieldModes.Hidden)]
     public class AudioChannelData
     {       
-
-
         /// <summary>
         /// Channel 名字
         /// </summary>

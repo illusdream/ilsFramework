@@ -95,7 +95,7 @@ namespace ilsFramework
             }
             catch (Exception e)
             {
-                return null;
+                throw;
             }
             
         }

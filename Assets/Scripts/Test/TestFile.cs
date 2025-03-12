@@ -17,7 +17,8 @@ public class TestG
 		/// <summary>
 		///dierge
 		/// </summary>
-		test2
+		test2,
+		test4 = 13
 	}
 }
 

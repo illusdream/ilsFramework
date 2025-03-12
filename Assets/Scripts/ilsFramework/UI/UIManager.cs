@@ -157,22 +157,16 @@ namespace ilsFramework
             {
                 case EUILayer.Bottom:
                     return (Bottom.transform, (int)EUILayer.Bottom * _UILayerInterval);
-                    break;
                 case EUILayer.Lower:
                     return (Lower.transform, (int)EUILayer.Lower * _UILayerInterval);
-                    break;
                 case EUILayer.Normal:
                     return (Normal.transform, (int)EUILayer.Normal * _UILayerInterval);
-                    break;
                 case EUILayer.Upper:
                     return (Upper.transform, (int)EUILayer.Upper * _UILayerInterval);
-                    break;
                 case EUILayer.Top:
                     return (Top.transform, (int)EUILayer.Top * _UILayerInterval);
-                    break;
                 case EUILayer.Debug:
                     return (Debug.transform, (int)EUILayer.Debug * _UILayerInterval);
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(layer), layer, null);
             }

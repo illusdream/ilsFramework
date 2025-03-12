@@ -197,19 +197,14 @@ namespace ilsFramework
             {
                 case EAssetLoadMode.Resources:
                     return LoadByResources<T>(assetLoadStr);
-                    break;
                 case EAssetLoadMode.AssetBundle:
                     var key = StringUtils.SplitAtLastSlash(assetLoadStr);
                     return LoadByAssetBundle<T>(key.Item1, key.Item2);
-                    break;
                 case EAssetLoadMode.AssetKey:
                     return LoadByAssetKey(assetLoadStr) as T;
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(assetLoadMode), assetLoadMode, null);
             }
-
-            return null;
         }
 
         /// <summary>

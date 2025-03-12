@@ -22,7 +22,7 @@ MonoBehaviour:
     MixerGroupName: BGM
     MixerVolumeParameterName: BGMVolume
     ChannelVolumeMin: -80
-    ChannelVolumeMax: 0
+    ChannelVolumeMax: 20
   - Name: Sound
     AudioChannelType: 0
     MaxAudioClipCount: 32

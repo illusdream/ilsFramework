@@ -161,7 +161,6 @@ namespace ilsFramework
             {
                 managerList.AddLast(manager.Item1);
                 manager.Item1.Init();
-                Debug.Log(manager.Item1.GetType().Name);
             }
             
             //找出需要遍历的类型

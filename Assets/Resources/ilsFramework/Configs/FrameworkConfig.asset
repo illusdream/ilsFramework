@@ -12,7 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ad17b9a64d44d49b40a3a2d2286f28, type: 3}
   m_Name: FrameworkConfig
   m_EditorClassIdentifier: 
-  ConfigsViewSort: []
+  ConfigsViewSort:
+  - Value: FrameworkConfig
+  - Value: LogConfigs
+  - Value: Asset
+  - Value: AudioConfig
+  - Value: DataBase
+  - Value: DebugConfig
+  - Value: ResourcesConfigs
   ManagersUpdateSort:
   - Value: ilsFramework.ConfigManager
   - Value: ilsFramework.AssetManager
@@ -26,4 +33,5 @@ MonoBehaviour:
   - Value: ilsFramework.TimerManager
   - Value: Test.TestManager
   - Value: ilsFramework.GlobalEventCenter
+  - Value: Test.TestManager2
   - Value: ilsFramework.NBTManager

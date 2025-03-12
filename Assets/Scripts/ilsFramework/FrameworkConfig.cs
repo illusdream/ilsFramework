@@ -65,11 +65,6 @@ namespace ilsFramework
                 .ToList();
 #endif
             
-            foreach (var readOnlyString in ManagersUpdateSort)
-            {
-                Debug.Log(readOnlyString.Value);
-            }
-            
             Dict_UpdateSort = new Dictionary<string, int>();
             for (int i = 0; i < ManagersUpdateSort.Count; i++)
             {
@@ -137,7 +132,16 @@ namespace ilsFramework
 
         public int GetManagerUpdateIndex(Type mangerType)
         {
-            return Dict_UpdateSort.GetValueOrDefault(mangerType.FullName, -1);
+            if (Dict_UpdateSort.TryGetValue(mangerType.FullName, out var value))
+            {
+                return value;
+            }
+            else
+            {
+                ManagersUpdateSort.Add(new ReadOnlyString(mangerType.FullName));
+                return ManagersUpdateSort.Count;
+            }
+
         }
         
         [Serializable]

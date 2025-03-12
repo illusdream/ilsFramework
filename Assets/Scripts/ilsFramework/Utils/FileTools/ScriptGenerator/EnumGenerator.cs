@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -76,12 +77,32 @@ namespace ilsFramework
         {
             string enumName;
             string description;
-
+            private int TargetValue;
+            private bool hasSetValue;
+            
             public static implicit operator EnumGBind((string, string) value)
             {
                 return new EnumGBind() {enumName = value.Item1,description = value.Item2};
             }
-
+            
+            public static implicit operator EnumGBind((string, string,int) value)
+            {
+                var instance = new EnumGBind() { enumName = value.Item1, description = value.Item2 };
+                instance.SetValue(value.Item3);
+                return instance;
+            }
+            public static implicit operator EnumGBind((string,int) value)
+            {
+                var instance = new EnumGBind() { enumName = value.Item1};
+                instance.SetValue(value.Item2);
+                return instance;
+            }
+            public void SetValue(int value)
+            {
+                hasSetValue = true;
+                TargetValue = value;
+            }
+            
             public void Generate(StringBuilder builder, string prefix)
             {
                 if (description !=null)
@@ -90,7 +111,8 @@ namespace ilsFramework
                     builder.AppendLine(prefix+"///"+description);
                     builder.AppendLine($"{prefix}/// </summary>");
                 }
-                builder.Append($"{prefix}{enumName}");
+                string value = hasSetValue? $" = {TargetValue}" : "";
+                builder.Append($"{prefix}{enumName}{value}");
             }
         }
     }

@@ -1,10 +1,10 @@
 ManifestFileVersion: 0
-CRC: 2311466208
+CRC: 2425930901
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: 111/22/scaryvfx
+      Name: test/22/scaryvfx
       Dependencies: {}
     Info_1:
-      Name: default
+      Name: test/22/testuipanel
       Dependencies: {}

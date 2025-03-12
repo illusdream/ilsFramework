@@ -9,6 +9,7 @@ using ilsFramework;
 using ilsFrameWork;
 using Sirenix.OdinInspector;
 using SQLite4Unity3d;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -32,6 +33,12 @@ namespace Test
         public Color testColor = Color.red;
         public AudioChannelData AudioChannelData;
         Stack<GameObject> gameObjects = new Stack<GameObject>();
+
+        [ShowInInspector]
+        public List<abinput> inputs = new List<abinput>()
+        {
+            new InputGen(typeof(int)),new InputGen(typeof(string)),new InputGen1111111(typeof(float))
+        };
         
         public void Awake()
         {
@@ -48,7 +55,7 @@ namespace Test
             // {
             //     Instantiate(o, Vector3.right, Quaternion.identity);
             // });
-            
+            UIManager.Instance.GetUIPanel<TestUIPanel>().Open();
         }
 
         public void Update()
@@ -122,6 +129,7 @@ namespace Test
             classGenerator.Append(new StringFieldGenerator(EFieldDeclarationMode.Null,EAccessType.Public,"test","测试文本","测试实施事实和"));
             generator.Append(classGenerator);
             EnumGenerator enumGenerator = new EnumGenerator(EAccessType.Public, "TestEnum","测试Enum",("test1","diyige"),("test2","dierge"));
+            enumGenerator.Append(("test4",13));
             classGenerator.Append(enumGenerator);
             generator.GenerateScript("TestFile");
             AssetDatabase.Refresh();
@@ -310,6 +318,56 @@ namespace Test
         private class Test
         {
             
+        }
+        [Button]
+        public void LogInput()
+        {
+            foreach (var input in inputs)
+            {
+                input.Value.LogSelf();
+            }
+        }
+        [Serializable]
+        [InlineEditor(InlineEditorObjectFieldModes.CompletelyHidden)] 
+        public abstract class abinput
+        {
+            public Type Type { get; set; }
+
+            [HideInInspector][SerializeField]
+            public object Value;
+            
+
+            // 显示实际类型，并允许展开子属性
+            [ShowInInspector, InlineEditor(Expanded = true),HideLabel,LabelText("Ceshi")]
+            public object Data
+            {
+                get => Value;
+                set => Value = value;
+            }
+        }
+        
+
+
+        [Serializable]
+
+        public class InputGen : abinput
+        {
+            public int a;
+            public InputGen(Type type)
+            {
+                this.Type = type;
+                this.Value = type.Default();
+            }
+        }
+        
+        public class InputGen1111111 : abinput
+        {
+            public string C;
+            public InputGen1111111(Type type)
+            {
+                this.Type = type;
+                this.Value = type.Default();
+            }
         }
         [Button]
         public void LoadAssetTest()
