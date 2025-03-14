@@ -198,13 +198,27 @@ namespace ilsFramework
                 case EAssetLoadMode.Resources:
                     return LoadByResources<T>(assetLoadStr);
                 case EAssetLoadMode.AssetBundle:
-                    var key = StringUtils.SplitAtLastSlash(assetLoadStr);
+                    var key = ilsStringUtils.SplitAtLastSlash(assetLoadStr);
                     return LoadByAssetBundle<T>(key.Item1, key.Item2);
                 case EAssetLoadMode.AssetKey:
                     return LoadByAssetKey(assetLoadStr) as T;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(assetLoadMode), assetLoadMode, null);
             }
+        }
+        /// <summary>
+        /// 通用同步加载，使用<see cref="AssetReference{T}"/>
+        /// </summary>
+        /// <param name="reference"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T Load<T>(AssetReference<T> reference) where T : UnityEngine.Object
+        {
+            if (reference.TryGetAssetLoadInfo(out EAssetLoadMode assetLoadMode,out var loadStr ))
+            {
+                return Load<T>(assetLoadMode, loadStr);
+            }
+            return null;
         }
 
         /// <summary>
@@ -228,7 +242,7 @@ namespace ilsFramework
                     AsyncLoadByResources(assetLoadStr, callback);
                     break;
                 case EAssetLoadMode.AssetBundle:
-                    var key = StringUtils.SplitAtLastSlash(assetLoadStr);
+                    var key = ilsStringUtils.SplitAtLastSlash(assetLoadStr);
                     AsyncLoadByAssetBundle(key.Item1,key.Item2,callback);
                     break;
                 case EAssetLoadMode.AssetKey:
@@ -236,6 +250,20 @@ namespace ilsFramework
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(assetLoadMode), assetLoadMode, null);
+            }
+        }
+        /// <summary>
+        /// 通用异步加载,使用<see cref="AssetReference{T}"/>
+        /// </summary>
+        /// <param name="reference"></param>
+        /// <param name="callback"></param>
+        /// <param name="assetKeyModeCallBack"></param>
+        /// <typeparam name="T"></typeparam>
+        public void LoadAsync<T>(AssetReference<T> reference, Action<T> callback = null, Action<Object> assetKeyModeCallBack = null) where T : UnityEngine.Object
+        {
+            if (reference.TryGetAssetLoadInfo(out EAssetLoadMode assetLoadMode,out var loadStr ))
+            {
+                LoadAsync(assetLoadMode, loadStr, callback, assetKeyModeCallBack);
             }
         }
     }

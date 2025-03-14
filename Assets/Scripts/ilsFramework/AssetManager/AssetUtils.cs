@@ -1,4 +1,6 @@
 using System;
+using System.Text.RegularExpressions;
+using UnityEditor;
 using Object = UnityEngine.Object;
 
 namespace ilsFramework
@@ -22,6 +24,17 @@ namespace ilsFramework
             return AssetManager.Instance.Load<T>(assetLoadMode, assetLoadStr);
         }
         /// <summary>
+        /// 通用同步加载，使用<see cref="AssetReference{T}"/>
+        /// </summary>
+        /// <param name="assetReference"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T Load<T>(AssetReference<T> assetReference) where T : UnityEngine.Object
+        {
+            return AssetManager.Instance.Load(assetReference);
+        }
+        
+        /// <summary>
         /// 异步通用加载
         /// </summary>
         /// <param name="assetLoadMode">加载模式</param>
@@ -37,6 +50,17 @@ namespace ilsFramework
         public static void LoadAsync<T>(EAssetLoadMode assetLoadMode, string assetLoadStr, Action<T> callback,Action<Object> assetKeyModeCallBack) where T : UnityEngine.Object
         {
             AssetManager.Instance.LoadAsync<T>(assetLoadMode, assetLoadStr, callback,assetKeyModeCallBack);
+        }
+        /// <summary>
+        /// 通用异步加载,使用<see cref="AssetReference{T}"/>
+        /// </summary>
+        /// <param name="assetReference"></param>
+        /// <param name="callback"></param>
+        /// <param name="assetKeyModeCallBack"></param>
+        /// <typeparam name="T"></typeparam>
+        public static void LoadAsync<T>(AssetReference<T> assetReference, Action<T> callback, Action<Object> assetKeyModeCallBack) where T : UnityEngine.Object
+        {
+            AssetManager.Instance.LoadAsync(assetReference, callback, assetKeyModeCallBack);
         }
         /// <summary>
         /// 使用同步加载位于Resources文件夹的资源
@@ -98,5 +122,15 @@ namespace ilsFramework
         {
             AssetManager.Instance.AsyncLoadByAssetKey(assetKey, callback);
         }
+#if UNITY_EDITOR
+        public static bool CheckAssetInResourcesFolder(string assetPath)
+        {
+            string resourceParten = "^Assets/Resources/";
+            AssetImporter importer = AssetImporter.GetAtPath(assetPath);
+            bool inReourcesFolder = Regex.IsMatch(importer.assetPath, resourceParten);
+            return inReourcesFolder;
+        }
+#endif
+
     }
 }

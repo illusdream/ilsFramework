@@ -28,8 +28,6 @@ namespace ilsFramework
         public HashSet<string> assetCollectionNames;
 
         public const string DefaultAssetBundleName = "Default";
-
-
         
         public AssetConfig()
         {

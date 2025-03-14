@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ilsFramework
 {
-    public static class MathUtils
+    public static class ilsMathUtils
     {
         public static float Remap(float value, float from1, float to1, float from2, float to2)
         {

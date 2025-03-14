@@ -203,7 +203,7 @@ namespace ilsFramework
                     
                     
                     //加载额外的UI组件
-                    var needFields = AssemblyUtils.GetAllFieldInfoWithAttribute<AutoUIElement>(type);
+                    var needFields = ilsAssemblyUtils.GetAllFieldInfoWithAttribute<AutoUIElement>(type);
                     foreach (var field in needFields)
                     {
                         object uiElement = null;
@@ -242,7 +242,7 @@ namespace ilsFramework
                         field.Item1.SetValue(instance,uiElement);
                     }
                     
-                    var needProperties = AssemblyUtils.GetAllPropertyInfoWithAttribute<AutoUIElement>(type);
+                    var needProperties = ilsAssemblyUtils.GetAllPropertyInfoWithAttribute<AutoUIElement>(type);
                     foreach (var property in needProperties)
                     {
                         if (property.Item1.GetSetMethod(nonPublic:true) == null)

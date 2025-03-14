@@ -26,7 +26,7 @@ namespace ilsFramework
         public virtual void SetVolume(AudioMixer mixer,float volume)
         {
             float volumeValue = Mathf.Clamp01(volume);
-            var _volumeValue = MathUtils.Remap(volumeValue, 0, 1, MinVolume, MaxVolume);
+            var _volumeValue = ilsMathUtils.Remap(volumeValue, 0, 1, MinVolume, MaxVolume);
             AudioTool.MixerParamterSafeSetFloat(mixer,ChannelVolumeParamterNames,_volumeValue);
         }
 

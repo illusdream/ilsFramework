@@ -2,7 +2,7 @@ using System;
 
 namespace ilsFramework
 {
-    public class StringUtils
+    public class ilsStringUtils
     {
         public static (string,string) SplitAtLastSlash(string input)
         {

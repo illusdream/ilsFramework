@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace ilsFramework
 {
-    public static class AssemblyUtils
+    public static class ilsAssemblyUtils
     {
         public static List<(FieldInfo,T)> GetAllFieldInfoWithAttribute<T>(Type type,params Type[] matchTypes ) where T : Attribute
         {

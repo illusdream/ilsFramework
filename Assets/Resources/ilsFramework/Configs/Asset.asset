@@ -28,3 +28,8 @@ MonoBehaviour:
     TargetTypes:
     - GameObject
     Ignore: []
+  spriteReference:
+    Asset: {fileID: 21300000, guid: 18dc640ad4e6ec1459925251109ef1db, type: 3}
+    loadMode: 1
+    loadStr: test/22/testuipanel/Test
+    isVaild: 1
