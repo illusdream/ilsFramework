@@ -14,7 +14,9 @@ namespace ilsFramework.Core
     public class FrameworkConfig : ConfigScriptObject
     {
         public override string ConfigName => "FrameworkConfig";
-
+        [LabelText("逻辑帧更新次数")]
+        public int LogicUpdateCountPerScecond;
+        
         [LabelText("Config顺序")]
         [HideLabel] 
         [SerializeField]

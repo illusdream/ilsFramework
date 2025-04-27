@@ -54,6 +54,11 @@ namespace ilsFramework
 
         }
 
+        public void LogicUpdate()
+        {
+            
+        }
+
         public void FixedUpdate()
         {
 

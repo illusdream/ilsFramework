@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ad17b9a64d44d49b40a3a2d2286f28, type: 3}
   m_Name: FrameworkConfig
   m_EditorClassIdentifier: 
+  LogicUpdateCountPerScecond: 50
   ConfigsViewSort:
   - Value: FrameworkConfig
   - Value: LogConfigs

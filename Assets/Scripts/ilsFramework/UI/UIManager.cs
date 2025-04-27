@@ -92,6 +92,11 @@ namespace ilsFramework
             }
         }
 
+        public void LogicUpdate()
+        {
+            
+        }
+
         public void FixedUpdate()
         {
             foreach (var uiPanel in uiPanels)

@@ -96,6 +96,11 @@ namespace ilsFramework
            
         }
 
+        public void LogicUpdate()
+        {
+           
+        }
+
         public void FixedUpdate()
         {
             foreach (var channel in audioChannels.Values)

@@ -19,6 +19,11 @@ namespace Test
             
         }
 
+        public void LogicUpdate()
+        {
+            
+        }
+
         public void FixedUpdate()
         {
            

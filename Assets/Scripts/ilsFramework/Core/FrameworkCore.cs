@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -20,16 +21,26 @@ namespace ilsFramework.Core
         private FrameworkConfig frameworkConfig;
 
         public Transform frameworkGOBaseTransform;
+
+        private double LogicUpdateCounter;
+        
+        private List<Exception> exceptions;
+        
+        public int LogicUpdateCountSinceInit { get; private set; }
         public FrameworkCore()
         {
             innerManagers = new Dictionary<Type, IManager>();
             managerContainerObjects = new Dictionary<Type, GameObject>();
             managerList = new LinkedList<IManager>();
             emptyGameObjectCallBacks = new List<(string, Action<GameObject>)>();
+            LogicUpdateCounter = 0;
+            LogicUpdateCountSinceInit = 0;
+            exceptions = new List<Exception>();
         }
         
         public void Initialize()
         {
+            exceptions.Clear();
             frameworkConfig = Config.GetFrameworkConfig();
             
             AssemblyForeach();
@@ -45,6 +56,7 @@ namespace ilsFramework.Core
 
                 emptyGameObjectCallBack.Item2?.Invoke(result);
             }
+            ThrowAllExceptions();
         }
 
         /// <summary>
@@ -91,6 +103,7 @@ namespace ilsFramework.Core
                     }
                 }
             }
+
             //排序Manger，并初始化
             allManagers.Sort((a, b) => a.Item2.CompareTo(b.Item2));
             foreach (var manager in allManagers)
@@ -102,8 +115,7 @@ namespace ilsFramework.Core
                 }
                 catch (Exception e)
                 {
-                    Debug.Log($"Manager{manager.Item1.GetType()}初始化出错");
-                    throw;
+                    exceptions.Add(e);
                 }
             }
             
@@ -116,14 +128,34 @@ namespace ilsFramework.Core
                 }
                 catch (Exception e)
                 {
-                    Debug.Log($"Manager{iAssemblyForeach.GetType()}程序集遍历出错");
-                    throw;
+                    exceptions.Add(e);
                 }
             }
+
         }
 
         public void Update()
         {
+            //优先查看逻辑帧更新
+            var logicUpdateInterval = 1 / (double)frameworkConfig.LogicUpdateCountPerScecond;
+            LogicUpdateCounter+= Time.unscaledDeltaTime;
+            exceptions.Clear();
+            while (LogicUpdateCounter >logicUpdateInterval)
+            {
+                LogicUpdateCounter -= logicUpdateInterval;
+                foreach (var manager in managerList)
+                {
+                    try
+                    {
+                        manager.LogicUpdate();
+                    }
+                    catch (Exception e)
+                    {
+                        exceptions.Add(e);
+                    }
+                }
+            }
+
             foreach (var manager in managerList)
             {
                 try
@@ -132,14 +164,16 @@ namespace ilsFramework.Core
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"类{manager.GetType()}更新时(Update):\t {e}");
-                    throw;
+                    exceptions.Add(e);
                 }
             }
+            
+            ThrowAllExceptions();
         }
 
         public void LateUpdate()
         {
+            exceptions.Clear();
             foreach (var manager in managerList)
             {
                 try
@@ -148,14 +182,15 @@ namespace ilsFramework.Core
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"类{manager.GetType()}更新时(LateUpdate):\t {e}");
-                    throw;
+                    exceptions.Add(e);
                 }
             }
+            ThrowAllExceptions();
         }
         
         public void FixedUpdate()
         {
+            exceptions.Clear();
             foreach (var manager in managerList)
             {
                 try
@@ -164,14 +199,15 @@ namespace ilsFramework.Core
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"类{manager.GetType()}更新时(FixedUpdate):\t {e}");
-                    throw;
+                    exceptions.Add(e);
                 }
             }
+            ThrowAllExceptions();
         }
 
         public void OnDestroy()
         {
+            exceptions.Clear();
             //删除
             foreach (var manager in managerList)
             {
@@ -181,16 +217,17 @@ namespace ilsFramework.Core
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"类{manager.GetType()}销毁时(OnDestroy):\t {e}");
-                    throw;
+                    exceptions.Add(e);
                 }
             }
             innerManagers.Clear();
             managerList.Clear();
+            ThrowAllExceptions();
         }
 
         public void OnDrawGizmos()
         {
+            exceptions.Clear();
             foreach (var manager in managerList)
             {
                 try
@@ -203,14 +240,15 @@ namespace ilsFramework.Core
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"类{manager.GetType()}绘制Gizmos时:\t {e}");
-                    throw;
+                    exceptions.Add(e);
                 }
             }
+            ThrowAllExceptions();
         }
 
         public void OnDrawGizmosSelected()
         {
+            exceptions.Clear();
             foreach (var manager in managerList)
             {
                 try
@@ -220,13 +258,20 @@ namespace ilsFramework.Core
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError($"类{manager.GetType()}绘制Gizmos时:\t {e}");
-                    throw;
+                    exceptions.Add(e);
                 }
             }
+            ThrowAllExceptions();
         }
 
-
+        private void ThrowAllExceptions()
+        {
+            if (exceptions.Any())
+            {
+                throw new AggregateException(exceptions);
+            }
+        }
+    
         #region Manager
 
         //获取对应的Manager实例

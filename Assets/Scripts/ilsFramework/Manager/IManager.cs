@@ -19,6 +19,8 @@ namespace ilsFramework
 
         void LateUpdate();
 
+        void LogicUpdate();
+        
         void FixedUpdate();
 
 
