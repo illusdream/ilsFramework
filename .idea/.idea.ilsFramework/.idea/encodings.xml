@@ -3,16 +3,16 @@
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/Assets/Scripts/FrameworkCore.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Singleton/ScriptSingleton.cs" charset="US-ASCII" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Event/BaseEventArgs.cs" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Event/EventCenterCore.cs" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Event/IEventCenter.cs" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Manager/BaseManager.cs" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/MonoManager/MonoManager.cs" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/Event/BaseEventArgs.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/Event/EventCenterCore.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/Event/IEventCenter.cs" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/Manager/BaseManager.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/MonoManager/MonoManager.cs" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/Pool/GameObjectPool/GameObjectPool.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/Pool/GameObjectPoolManager.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/Pool/Poolable.cs" charset="GB2312" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/Singleton/MonoSingleton.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Core/Timer/TimerManager.cs" charset="GB2312" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/OldFrameworkCore.cs" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Pool/GameObjectPool/GameObjectPool.cs" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Pool/GameObjectPoolManager.cs" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Pool/Poolable.cs" charset="GB2312" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Singleton/MonoSingleton.cs" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/ilsFramework/Timer/TimerManager.cs" charset="GB2312" />
   </component>
 </project>

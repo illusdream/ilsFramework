@@ -1,4 +1,5 @@
 using ilsFramework;
+using ilsFramework.Core;
 using UnityEngine;
 
 namespace Test

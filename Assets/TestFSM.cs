@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ilsFramework;
+using ilsFramework.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -28,7 +29,6 @@ public class TestFSM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     
         if (Input.GetMouseButtonDown(0))
         {
             changeState = true;

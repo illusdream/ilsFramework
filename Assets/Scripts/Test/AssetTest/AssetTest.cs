@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using ilsFramework;
+using ilsFramework.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using AssetConfig = ilsFramework.Core.AssetConfig;
 
 public class AssetTest : MonoBehaviour
 {

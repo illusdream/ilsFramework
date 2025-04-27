@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ad17b9a64d44d49b40a3a2d2286f28, type: 3}
   m_Name: FrameworkConfig
   m_EditorClassIdentifier: 
-  LogicUpdateCountPerScecond: 50
+  LogicUpdateCountPerScecond: 0
   ConfigsViewSort:
   - Value: FrameworkConfig
   - Value: LogConfigs
@@ -22,17 +22,17 @@ MonoBehaviour:
   - Value: DebugConfig
   - Value: ResourcesConfigs
   ManagersUpdateSort:
-  - Value: ilsFramework.ConfigManager
-  - Value: ilsFramework.AssetManager
-  - Value: ilsFramework.MonoManager
-  - Value: ilsFramework.SceneHandler
-  - Value: ilsFramework.AudioManager
-  - Value: ilsFramework.DebugManager
-  - Value: ilsFramework.LoggerManager
-  - Value: ilsFramework.PoolManager
-  - Value: ilsFramework.UIManager
-  - Value: ilsFramework.TimerManager
-  - Value: Test.TestManager
-  - Value: ilsFramework.GlobalEventCenter
+  - Value: ilsFramework.Core.ConfigManager
+  - Value: ilsFramework.Core.DebugManager
+  - Value: ilsFramework.Core.MonoManager
+  - Value: ilsFramework.Core.AudioManager
+  - Value: ilsFramework.Core.TimerManager
+  - Value: ilsFramework.Core.GlobalEventCenter
   - Value: Test.TestManager2
-  - Value: ilsFramework.NBTManager
+  - Value: ilsFramework.Core.LoggerManager
+  - Value: ilsFramework.Core.AssetManager
+  - Value: ilsFramework.Core.UIManager
+  - Value: Test.TestManager
+  - Value: ilsFramework.NBT.NBTManager
+  - Value: ilsFramework.Core.SceneHandler
+  - Value: ilsFramework.Core.PoolManager

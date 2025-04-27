@@ -1,8 +1,9 @@
 using System;
 using ilsFramework;
+using ilsFramework.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static ilsFramework.SceneEvent;
+using static ilsFramework.Core.SceneEvent;
 
 namespace Test
 {

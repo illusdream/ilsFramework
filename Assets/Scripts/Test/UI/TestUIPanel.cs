@@ -1,5 +1,5 @@
 using ilsFramework;
-using ilsFrameWork;
+using ilsFramework.Core;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;

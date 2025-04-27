@@ -6,9 +6,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using ilsFramework;
-using ilsFrameWork;
+using ilsFramework.Core;
+using ilsFramework.Core.SQLite4Unity3d;
+using ilsFramework.NBT;
 using Sirenix.OdinInspector;
-using SQLite4Unity3d;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +17,7 @@ using UnityEngine.Audio;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-using Logger = ilsFramework.Logger;
+using Logger = ilsFramework.Core.Logger;
 using Object = UnityEngine.Object;
 
 namespace Test
