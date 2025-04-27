@@ -1,4 +1,5 @@
 using System;
+using ilsFramework.Core;
 using UnityEngine;
 
 namespace ilsFramework
@@ -12,13 +13,7 @@ namespace ilsFramework
     {
         public int ManagerUpdateIndex { get; set; }
         //提供一个快速的访问方式从FrameworkCore获取管理类
-        public static T Instance
-        {
-            get
-            {
-                return FrameworkCore.Instance.GetManager<T>();
-            }
-        }
+        public static T Instance => FrameworkCore.Instance.GetManager<T>();
         private static GameObject _containerObject;
         public static GameObject ContainerObject
         {
@@ -31,7 +26,5 @@ namespace ilsFramework
                 return _containerObject;
             }
         }
-
-
     }
 }

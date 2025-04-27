@@ -6,10 +6,7 @@ namespace ilsFramework
     {
 
         EventCenterCore _eventCenterCore;
-
-        public int Priority => (int)ManagerPrioritySet.EventCenter;
-
-
+        
 
         public void Init()
         {
@@ -23,6 +20,11 @@ namespace ilsFramework
         public void LateUpdate()
         {
 
+        }
+
+        public void LogicUpdate()
+        {
+            
         }
 
         public void FixedUpdate()

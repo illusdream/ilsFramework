@@ -6,7 +6,7 @@ namespace ilsFramework
     /// 基于MonoBehaviour的单例
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class ScriptSingleton<T> : MonoBehaviour where T : ScriptSingleton<T>
+    public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
     {
         private static T _instance;
         private static readonly object locker = new object();

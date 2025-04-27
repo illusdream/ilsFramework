@@ -6,6 +6,7 @@ using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities;
 using Sirenix.Utilities.Editor;
 using ilsFramework;
+using ilsFramework.Core;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;

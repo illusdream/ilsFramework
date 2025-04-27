@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ilsFramework.Core;
 using UnityEngine;
 using UnityEngine.Internal;
 
@@ -10,9 +11,7 @@ namespace ilsFramework
     {
       private  MonoController controller;
        private List<IEnumerator> _needUseCorotuine;
-        public int Priority => (int)ManagerPrioritySet.MonoManager;
-
-
+       
 
         public void Init()
         {
@@ -31,6 +30,11 @@ namespace ilsFramework
         public void LateUpdate()
         {
 
+        }
+
+        public void LogicUpdate()
+        {
+            
         }
 
         public void FixedUpdate()

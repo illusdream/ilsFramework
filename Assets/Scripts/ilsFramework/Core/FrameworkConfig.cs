@@ -2,16 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
-
-using UnityEngine;
-
-#if UNITY_EDITOR
 using Sirenix.OdinInspector.Editor;
 using UnityEditor;
-#endif
+using UnityEngine;
 
-
-namespace ilsFramework
+namespace ilsFramework.Core
 {
     /// <summary>
     /// 框架配置，通过这个SO 加载一些框架需要配置的东西

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using ilsFramework.Core;
 using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
@@ -45,6 +46,11 @@ namespace ilsFramework
         }
 
         public void LateUpdate()
+        {
+            
+        }
+
+        public void LogicUpdate()
         {
             
         }
