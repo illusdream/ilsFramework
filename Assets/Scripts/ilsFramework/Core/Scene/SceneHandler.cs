@@ -77,7 +77,7 @@ namespace ilsFramework.Core
         private void SceneManagerOnActiveSceneChanged(Scene arg0, Scene arg1)
         {
             var args = new SceneChangedEventArgs(arg0, arg1);
-            sceneEventCenterCore.BoradCastMessage(SceneChanged, args);
+            sceneEventCenterCore.BroadcastMessage(SceneChanged, args);
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace ilsFramework.Core
         private void SceneManagerOnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
             var args = new SceneLoadedEventArgs(arg0, arg1);
-            sceneEventCenterCore?.BoradCastMessage(SceneLoaded, args);
+            sceneEventCenterCore?.BroadcastMessage(SceneLoaded, args);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace ilsFramework.Core
         private void SceneManagerOnSceneUnloaded(Scene arg0)
         {
             var args = new SceneUnloadedEventArgs(arg0);
-            sceneEventCenterCore?.BoradCastMessage(SceneUnloaded, args);
+            sceneEventCenterCore?.BroadcastMessage(SceneUnloaded, args);
         }
 
         /// <summary>
