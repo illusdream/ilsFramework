@@ -44,5 +44,9 @@ namespace ilsFramework.Core
         {
             
         }
+        public virtual void ChangeState<T>() where T : IState
+        {
+            Owner?.ChangeState<T>();
+        }
     }
 }
