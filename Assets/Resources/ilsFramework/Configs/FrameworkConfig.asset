@@ -23,14 +23,14 @@ MonoBehaviour:
   - Value: ResourcesConfigs
   ManagersUpdateSort:
   - Value: ilsFramework.Core.ConfigManager
-  - Value: ilsFramework.Core.DebugManager
   - Value: ilsFramework.Core.MonoManager
+  - Value: ilsFramework.Core.AssetManager
+  - Value: ilsFramework.Core.DebugManager
   - Value: ilsFramework.Core.AudioManager
   - Value: ilsFramework.Core.TimerManager
   - Value: ilsFramework.Core.GlobalEventCenter
   - Value: Test.TestManager2
   - Value: ilsFramework.Core.LoggerManager
-  - Value: ilsFramework.Core.AssetManager
   - Value: ilsFramework.Core.UIManager
   - Value: Test.TestManager
   - Value: ilsFramework.NBT.NBTManager
