@@ -137,8 +137,15 @@ namespace ilsFramework.Core
             Debug = new GameObject("Debug");
             Debug.layer = LayerMask.NameToLayer("UI");
             Debug.transform.parent = UIRoot.transform;
-            
-            eventHandler = Object.Instantiate(uiConfig.UIEventHandler, ContainerObject.transform);
+
+            if (uiConfig.UIEventHandler)
+            {
+                eventHandler = Object.Instantiate(uiConfig.UIEventHandler, ContainerObject.transform);
+            }
+            else
+            {
+                $"UI EventHandler预制体未注册，请在Config中填写".ErrorSelf();
+            }
         }
 
         public (Transform, int) GetUILayerInfo(EUILayer layer)

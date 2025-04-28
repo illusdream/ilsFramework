@@ -2,19 +2,22 @@ using System;
 
 namespace ilsFramework.Core
 {
-    /// <summary>
-    ///     通用状态机对应状态
-    /// </summary>
-    public class State : IState
+    public class SubOldFsm<T> : OldFSM<T>, IState where T : IEquatable<T>
     {
+        public FSM Owner { get; set; }
+        public bool IsExecuting { get; set; }
+
         public void OnInit()
         {
             onInit();
             OnInitAction?.Invoke();
+
+            Init();
         }
 
         public void OnEnter()
         {
+            Continue();
             onEnter();
             OnEnterAction?.Invoke();
         }
@@ -23,21 +26,37 @@ namespace ilsFramework.Core
         {
             onUpdate();
             OnUpdateAction?.Invoke();
+
+            Update();
+        }
+
+        public void OnLateUpdate()
+        {
+            
+        }
+
+        public void OnLogicUpdate()
+        {
+            
         }
 
         public void OnFixedUpdate()
         {
             onFixedUpdate();
             OnFixedUpdateAction?.Invoke();
+
+            FixedUpdate();
         }
 
         public void OnExit()
         {
             onExit();
             OnExitAction?.Invoke();
+
+            Pause();
         }
 
-        public void OnDestroy()
+        public sealed override void OnDestroy()
         {
             onDestroy();
             OnDestroyAction?.Invoke();
@@ -49,7 +68,7 @@ namespace ilsFramework.Core
 
         public event Action OnInitAction;
 
-        public State AddOnInitAction(Action action)
+        public SubOldFsm<T> AddOnInitAction(Action action)
         {
             OnInitAction += action;
             return this;
@@ -61,7 +80,7 @@ namespace ilsFramework.Core
 
         public event Action OnEnterAction;
 
-        public State AddOnEnterAction(Action action)
+        public SubOldFsm<T> AddOnEnterAction(Action action)
         {
             OnEnterAction += action;
             return this;
@@ -73,7 +92,7 @@ namespace ilsFramework.Core
 
         public event Action OnUpdateAction;
 
-        public State AddOnUpdateAction(Action action)
+        public SubOldFsm<T> AddOnUpdateAction(Action action)
         {
             OnUpdateAction += action;
             return this;
@@ -85,7 +104,7 @@ namespace ilsFramework.Core
 
         public event Action OnFixedUpdateAction;
 
-        public State AddOnFixedUpdateAction(Action action)
+        public SubOldFsm<T> AddOnFixedUpdateAction(Action action)
         {
             OnFixedUpdateAction += action;
             return this;
@@ -97,7 +116,7 @@ namespace ilsFramework.Core
 
         public event Action OnExitAction;
 
-        public State AddOnExitAction(Action action)
+        public SubOldFsm<T> AddOnExitAction(Action action)
         {
             OnExitAction += action;
             return this;
@@ -109,7 +128,7 @@ namespace ilsFramework.Core
 
         public event Action OnDestroyAction;
 
-        public State AddOnDestroyAction(Action action)
+        public SubOldFsm<T> AddOnDestroyAction(Action action)
         {
             OnDestroyAction += action;
             return this;
