@@ -4,78 +4,93 @@ using Unity.Mathematics;
 namespace ilsFramework.Core
 {
     /// <summary>
-    ///     计时器
+    /// 计时器
     /// </summary>
     public class Timer
     {
         /// <summary>
-        ///     周期时间，每次两次执行间间隔的时间
-        /// </summary>
-        private float _cycleTime = 1f;
-
-        /// <summary>
-        ///     延迟时间，在延迟之后才会进入计时循环
-        /// </summary>
-        private float _delayTime;
-
-        /// <summary>
-        ///     执行次数,每次执行函数后自动-1，值为0的时候为执行完毕，&lt;0时为循环操作
-        /// </summary>
-        private int _executingTimes;
-
-        /// <summary>
-        ///     通过Guid获取单独的id，并以此作为dic的键名
+        /// 通过Guid获取单独的id，并以此作为dic的键名
         /// </summary>
         public int ID;
 
         /// <summary>
-        ///     是否完成，如果完成了就会进入删除队列,不循环的没必要保留，下次使用的时候再申请一个就行了
+        /// 计时字段，每次自增来检测
         /// </summary>
-        public bool IsFinish;
+        private float time = 0;
 
         /// <summary>
-        ///     是否为帧计时器，采用每帧+1的方式计算
+        /// 计时字段
         /// </summary>
-        public bool IsFrameTimer;
+        public float Time => time;
 
         /// <summary>
-        ///     每次循环完成调用一次
+        /// 周期时间，每次两次执行间间隔的时间
         /// </summary>
-        public Action<Timer> OnCompleted;
+        private float _cycleTime = 1f;
 
         /// <summary>
-        ///     在循环过程中每帧调用
+        /// 延迟时间，在延迟之后才会进入计时循环
         /// </summary>
-        public Action<Timer> OnCycling;
+        private float _delayTime = 0;
 
         /// <summary>
-        ///     整个计时流程完成后调用
+        /// 计时器进度，每次循环过程中的进度
         /// </summary>
-        public Action<Timer> OnFinish;
+        public float Progress => IsFinish ? 1 : math.clamp(time / _cycleTime, 0, 1);
 
         /// <summary>
-        ///     在计时器开启时调用一次，即delay《=0时
+        /// 是否循环
+        /// </summary>
+        public bool IsLoop => _executingTimes < 0;
+
+        /// <summary>
+        /// 执行次数,每次执行函数后自动-1，值为0的时候为执行完毕，&lt;0时为循环操作
+        /// </summary>
+        private int _executingTimes;
+
+        /// <summary>
+        /// 是否完成，如果完成了就会进入删除队列,不循环的没必要保留，下次使用的时候再申请一个就行了
+        /// </summary>
+        public bool IsFinish = false;
+
+        /// <summary>
+        /// 是否为帧计时器，采用每帧+1的方式计算
+        /// </summary>
+        public ETimerType _TimerType;
+
+        /// <summary>
+        /// 在计时器开启时调用一次，即delay《=0时
         /// </summary>
         public Action<Timer> OnStart;
 
         /// <summary>
-        ///     计时字段，每次自增来检测
+        /// 每次循环完成调用一次
         /// </summary>
-        private float time;
+        public Action<Timer> OnCompleted;
 
         /// <summary>
-        ///     不要在这里创建计时器，在<see cref="TimerManager" />中使用<see href="TimerManager.RegisterTimer" /> 或<see href="TimerManager.GetOrResetTimer" />创建
+        /// 整个计时流程完成后调用
+        /// </summary>
+        public Action<Timer> OnFinish;
+
+        /// <summary>
+        /// 在循环过程中每帧调用
+        /// </summary>
+        public Action<Timer> OnCycling;
+
+        /// <summary>
+        /// 不要在这里创建计时器，在<see cref="TimerManager"/>中使用<see href="TimerManager.RegisterTimer"/> 或<see href="TimerManager.GetOrResetTimer"/>创建
         /// </summary>
         /// <param name="iD"></param>
         /// <param name="cycleTime"></param>
         /// <param name="delayTime"></param>
         /// <param name="executingTimes"></param>
-        /// <param name="isFrameTimer"></param>
+        /// <param name="timerType"></param>
         /// <param name="onStart"></param>
         /// <param name="onCompleted"></param>
         /// <param name="onFinish"></param>
         /// <param name="onCycling"></param>
-        public Timer(int iD, float cycleTime, float delayTime, int executingTimes, bool isFrameTimer, Action<Timer> onStart, Action<Timer> onCompleted,
+        public Timer(int iD, float cycleTime, float delayTime, int executingTimes, ETimerType timerType, Action<Timer> onStart, Action<Timer> onCompleted,
             Action<Timer> onFinish, Action<Timer> onCycling)
         {
             ID = iD;
@@ -83,52 +98,61 @@ namespace ilsFramework.Core
             _cycleTime = cycleTime;
             _delayTime = delayTime;
             _executingTimes = executingTimes;
-            IsFrameTimer = isFrameTimer;
+            _TimerType = timerType;
             OnStart = onStart;
             OnCompleted = onCompleted;
             OnFinish = onFinish;
             OnCycling = onCycling;
         }
 
-        /// <summary>
-        ///     计时字段
-        /// </summary>
-        public float Time => time;
-
-        /// <summary>
-        ///     计时器进度，每次循环过程中的进度
-        /// </summary>
-        public float Progress => IsFinish ? 1 : math.clamp(time / _cycleTime, 0, 1);
-
-        /// <summary>
-        ///     是否循环
-        /// </summary>
-        public bool IsLoop => _executingTimes < 0;
-
-        public void Update(float dt)
+        public void Update(float dt, float realDeltaTime)
         {
             if (IsFinish)
                 return;
             if (_delayTime > 0)
             {
-                if (IsFrameTimer)
-                    _delayTime--;
-                else
-                    _delayTime -= dt;
-
+                switch (_TimerType)
+                {
+                    case ETimerType.TimeScale:
+                        _delayTime -= dt;
+                        break;
+                    case ETimerType.FramedByUpdate:
+                        _delayTime--;
+                        break;
+                    case ETimerType.RealTime:
+                        _delayTime -= realDeltaTime;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
 
                 if (_delayTime <= 0)
+                {
                     OnStart?.Invoke(this);
+                }
                 else
+                {
                     return;
+                }
             }
 
             if (_executingTimes != 0)
             {
-                if (IsFrameTimer)
-                    time++;
-                else
-                    time += dt;
+                switch (_TimerType)
+                {
+                    case ETimerType.TimeScale:
+                        time += dt;
+                        break;
+                    case ETimerType.FramedByUpdate:
+                        time++;
+                        break;
+                    case ETimerType.RealTime:
+                        time += realDeltaTime;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
                 if (time >= _cycleTime)
                 {
                     _executingTimes--;
@@ -148,7 +172,7 @@ namespace ilsFramework.Core
             }
         }
 
-        public void Reset(float cycleTime, float delayTime, int executingTimes, bool isFrameTimer, Action<Timer> onStart, Action<Timer> onCompleted,
+        public void Reset(float cycleTime, float delayTime, int executingTimes, ETimerType timeType, Action<Timer> onStart, Action<Timer> onCompleted,
             Action<Timer> onFinish, Action<Timer> onCycling)
         {
             IsFinish = false;
@@ -156,11 +180,12 @@ namespace ilsFramework.Core
             _cycleTime = cycleTime;
             _delayTime = delayTime;
             _executingTimes = executingTimes;
-            IsFrameTimer = isFrameTimer;
+            _TimerType = timeType;
             OnStart = onStart;
             OnCompleted = onCompleted;
             OnFinish = onFinish;
             OnCycling = onCycling;
         }
+
     }
 }
