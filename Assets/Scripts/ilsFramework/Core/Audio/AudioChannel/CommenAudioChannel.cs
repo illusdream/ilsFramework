@@ -53,7 +53,6 @@ namespace ilsFramework.Core
                 .SetName(audioChannelData.Name + "AudioPool")
                 .SetInitialCapacity(InitAudioEmitterCount)
                 .SetMaxCapacity(audioChannelData.MaxAudioClipCount)
-                .SetCollectionCheck(true)
                 .SetGameObjectParent(AudioChannelContainer.transform)
                 .SetCreateObjectFunc(CreateAudioEmitter)
                 .SetActionOnGet(PoolGetAudioEmitter)

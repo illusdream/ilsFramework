@@ -47,7 +47,7 @@ namespace ilsFramework.Core
 
 
         public GameObjectPool(int maxCapacity, int initialCapacity, Func<GameObjectPool, GameObject> createObjectFunc, Action<GameObject> actionOnGet,
-            Action<GameObject> actionOnRecycle, Action<GameObject> actionOnDestroy, bool collectionCheck, string name, Transform gameObjectParent)
+            Action<GameObject> actionOnRecycle, Action<GameObject> actionOnDestroy, string name, Transform gameObjectParent)
         {
             PoolViewer = new GameObject(name);
             _maxCapacity = maxCapacity;
@@ -56,7 +56,6 @@ namespace ilsFramework.Core
             _actionOnGet = actionOnGet;
             _actionOnRecycle = actionOnRecycle;
             _actionOnDestroy = actionOnDestroy;
-            CollectionCheck = collectionCheck;
             this.Name = name;
             this.GameObjectParent = gameObjectParent;
             PoolViewer.transform.SetParent(gameObjectParent);

@@ -34,8 +34,7 @@ namespace ilsFramework.Core
 
         //最大容量
         private int _maxCapacity;
-
-        private bool collectionCheck;
+        
         private Transform gameObjectParent;
 
         private string name;
@@ -110,16 +109,9 @@ namespace ilsFramework.Core
             return this;
         }
 
-        public GameObjectPoolFactory SetCollectionCheck(bool collectionCheck)
-        {
-            this.collectionCheck = collectionCheck;
-            return this;
-        }
-
         public GameObjectPool Register()
         {
-            var instance = new GameObjectPool(_maxCapacity, _initialCapacity, _createObjectFunc, _actionOnGet, _actionOnRecycle, _actionOnDestroy,
-                collectionCheck, name, gameObjectParent);
+            var instance = new GameObjectPool(_maxCapacity, _initialCapacity, _createObjectFunc, _actionOnGet, _actionOnRecycle, _actionOnDestroy, name, gameObjectParent);
             PoolManager.Instance.RegisterGameObjectPool(instance);
             return instance;
         }
