@@ -2,7 +2,7 @@ using System;
 
 namespace ilsFramework.Core
 {
-    public class GlobalEventCenter : ManagerSingleton<GlobalEventCenter>, IManager, IEventCenter
+    public class GlobalEventCenter : ManagerSingleton<GlobalEventCenter>, IEventCenter
     {
         private EventCenterCore _eventCenterCore;
 
@@ -20,40 +20,42 @@ namespace ilsFramework.Core
         {
             _eventCenterCore.RemoveListener(messageType, action);
         }
-
-
-        public void Init()
+        public override void OnInit()
         {
             _eventCenterCore = new EventCenterCore();
         }
 
-        public void Update()
+        public override void OnUpdate()
         {
+            
         }
 
-        public void LateUpdate()
+        public override void OnLateUpdate()
         {
+            
         }
 
-        public void LogicUpdate()
+        public override void OnLogicUpdate()
         {
+           
+        }
+        public override void OnFixedUpdate()
+        {
+            
         }
 
-        public void FixedUpdate()
-        {
-        }
-
-        public void OnDestroy()
+        public override void OnDestroy()
         {
             _eventCenterCore.OnDestroy();
         }
 
-        public void OnDrawGizmos()
+        public override void OnDrawGizmos()
         {
+            
         }
-
-        public void OnDrawGizmosSelected()
+        public override void OnDrawGizmosSelected()
         {
+            
         }
     }
 }

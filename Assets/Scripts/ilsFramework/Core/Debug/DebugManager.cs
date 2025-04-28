@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace ilsFramework.Core
 {
-    public class DebugManager : ManagerSingleton<DebugManager>, IManager, IAssemblyForeach
+    public class DebugManager : ManagerSingleton<DebugManager>, IAssemblyForeach
     {
         private Dictionary<string, CommendContainer> commands;
 
@@ -29,41 +29,44 @@ namespace ilsFramework.Core
                 }
             }
         }
-
-        public void Init()
+        public override void OnInit()
         {
             config = ConfigManager.Instance.GetConfig<DebugConfig>();
             parsers = new Dictionary<Type, IParser>();
             commands = new Dictionary<string, CommendContainer>();
         }
 
-
-        public void Update()
+        public override void OnUpdate()
         {
+            
         }
 
-        public void LateUpdate()
+        public override void OnLateUpdate()
         {
+           
         }
 
-        public void LogicUpdate()
+        public override void OnLogicUpdate()
         {
+            
+        }
+        public override void OnFixedUpdate()
+        {
+           
         }
 
-        public void FixedUpdate()
+        public override void OnDestroy()
         {
+            
+        }
+        public override void OnDrawGizmos()
+        {
+            
         }
 
-        public void OnDestroy()
+        public override void OnDrawGizmosSelected()
         {
-        }
-
-        public void OnDrawGizmos()
-        {
-        }
-
-        public void OnDrawGizmosSelected()
-        {
+           
         }
 
         public bool TryGetParser(Type type, out IParser parser)

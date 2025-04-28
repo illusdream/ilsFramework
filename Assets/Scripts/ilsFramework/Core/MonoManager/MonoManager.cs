@@ -6,44 +6,48 @@ using UnityEngine.Internal;
 
 namespace ilsFramework.Core
 {
-    public class MonoManager : ManagerSingleton<MonoManager>, IManager
+    public class MonoManager : ManagerSingleton<MonoManager>
     {
         private List<IEnumerator> _needUseCorotuine;
         private MonoController controller;
-
-
-        public void Init()
+        
+        public override void OnInit()
         {
             _needUseCorotuine = new List<IEnumerator>();
             FrameworkCore.Instance.CreateEmptyGameObject("PublicMonoHandler", go => { controller = go.AddComponent<MonoController>(); });
         }
 
-        public void Update()
+        public override void OnUpdate()
         {
+            
         }
 
-        public void LateUpdate()
+        public override void OnLateUpdate()
         {
+           
         }
 
-        public void LogicUpdate()
+        public override void OnLogicUpdate()
         {
+           
         }
 
-        public void FixedUpdate()
+        public override void OnFixedUpdate()
         {
+           
+        }
+        public override void OnDestroy()
+        {
+            
+        }
+        public override void OnDrawGizmos()
+        {
+            
         }
 
-        public void OnDestroy()
+        public override void OnDrawGizmosSelected()
         {
-        }
-
-        public void OnDrawGizmos()
-        {
-        }
-
-        public void OnDrawGizmosSelected()
-        {
+            
         }
 
         #region 更新

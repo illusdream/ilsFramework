@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ilsFramework.Core
 {
-    public partial class TimerManager : ManagerSingleton<TimerManager>, IManager
+    public partial class TimerManager : ManagerSingleton<TimerManager>
     {
         private readonly HashSet<Timer> _needRemove = new();
         private readonly Dictionary<int, Timer> addTimers = new();
@@ -12,12 +12,13 @@ namespace ilsFramework.Core
         private readonly Dictionary<int, Timer> timers = new();
 
         private int timerIDCounter;
-
-        public void Init()
+        
+        public override void OnInit()
         {
+            
         }
 
-        public void Update()
+        public override void OnUpdate()
         {
             //加入缓存
             foreach (var addtimer in addTimers)
@@ -46,30 +47,34 @@ namespace ilsFramework.Core
                     }
             }
         }
-
-        public void LateUpdate()
+        public override void OnLateUpdate()
         {
+            
         }
 
-        public void LogicUpdate()
+        public override void OnLogicUpdate()
         {
+            
         }
 
-        public void FixedUpdate()
+        public override void OnFixedUpdate()
         {
+            
+        }
+        
+        public override void OnDestroy()
+        {
+            
         }
 
-
-        public void OnDestroy()
+        public override void OnDrawGizmos()
         {
+            
         }
-
-        public void OnDrawGizmos()
+        
+        public override void OnDrawGizmosSelected()
         {
-        }
-
-        public void OnDrawGizmosSelected()
-        {
+            
         }
 
         /// <summary>

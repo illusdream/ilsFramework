@@ -6,7 +6,7 @@ using UnityEngine.Audio;
 
 namespace ilsFramework.Core
 {
-    public class AudioManager : ManagerSingleton<AudioManager>, IManager, IAssemblyForeach
+    public class AudioManager : ManagerSingleton<AudioManager>, IAssemblyForeach
     {
         public const string AudioSettingPath = "Assets/Scripts/ilsFramework/Audio/AudioSetting.cs";
         public const string AudioClipDataConfigsPath = "Assets/Resources/Audio/AudioClipDataConfigs.asset";
@@ -64,46 +64,48 @@ namespace ilsFramework.Core
                     audioChannels.Add(audioChannelData.Name, instance);
                 }
         }
-
-        public void Init()
+        
+        public override void OnInit()
         {
             audioConfig = ConfigManager.Instance.GetConfig<AudioConfig>();
 
             audioclipBuffer = new Dictionary<string, AudioClip>();
-
-
+            
             mixer = AssetManager.Instance.Load<AudioMixer>(EAssetLoadMode.Resources, audioConfig.AudioMixerPath);
         }
-
-        public void Update()
+        public override void OnUpdate()
         {
             foreach (var channel in audioChannels.Values) channel.Update();
         }
-
-        public void LateUpdate()
+        
+        public override void OnLateUpdate()
         {
+            
         }
 
-        public void LogicUpdate()
-        {
-        }
 
-        public void FixedUpdate()
+        public override void OnLogicUpdate()
+        {
+           
+        }
+        public override void OnFixedUpdate()
         {
             foreach (var channel in audioChannels.Values) channel.FixedUpdate();
         }
-
-        public void OnDestroy()
+        
+        public override void OnDestroy()
         {
             foreach (var channel in audioChannels.Values) channel.OnDestroy();
         }
-
-        public void OnDrawGizmos()
+        
+        public override void OnDrawGizmos()
         {
+            
         }
 
-        public void OnDrawGizmosSelected()
+        public override void OnDrawGizmosSelected()
         {
+           
         }
 
         /// <summary>

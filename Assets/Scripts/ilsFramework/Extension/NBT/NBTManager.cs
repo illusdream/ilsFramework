@@ -7,10 +7,12 @@ namespace ilsFramework.NBT
     public class NBTManager : ManagerSingleton<NBTManager>,IManager,IAssemblyForeach
     {
         private SerializerCollection Serializers;
-        public void Init()
+        
+        public override void OnInit()
         {
             
         }
+
         public void ForeachCurrentAssembly(Type[] types)
         {
             List<Type> typesToSerialize = new List<Type>();
@@ -24,39 +26,40 @@ namespace ilsFramework.NBT
             Serializers = new SerializerCollection();
             Serializers.FillSerializers(typesToSerialize);
         }
-        public void Update()
+
+        public override void OnUpdate()
         {
             
         }
 
-        public void LateUpdate()
+
+        public override void OnLateUpdate()
         {
             
         }
 
-        public void LogicUpdate()
+        public override void OnLogicUpdate()
         {
             
         }
 
-        public void FixedUpdate()
+        public override void OnFixedUpdate()
+        {
+            
+        }
+        public override void OnDestroy()
         {
             
         }
 
-        public void OnDestroy()
+        public override void OnDrawGizmos()
         {
             
         }
 
-        public void OnDrawGizmos()
+        public override void OnDrawGizmosSelected()
         {
-            
-        }
-
-        public void OnDrawGizmosSelected()
-        {
-            
+            throw new NotImplementedException();
         }
 
         public SerializerCollection GetSerializers()

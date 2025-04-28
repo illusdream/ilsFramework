@@ -2,31 +2,36 @@ using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace ilsFramework.Core
 {
-    public class UIManager : ManagerSingleton<UIManager>, IManager, IAssemblyForeach
+    public class UIManager : ManagerSingleton<UIManager>, IAssemblyForeach
     {
+        GameObject UIRoot;
+            
+        GameObject Bottom;
+        GameObject Lower;
+        GameObject Normal;
+        GameObject Upper;
+        GameObject Top;
+        GameObject Debug;
+        
         /// <summary>
         ///     UI层级间的SortOrder间隔
         /// </summary>
         private readonly int _UILayerInterval = 100;
-
-        private GameObject Bottom;
-        private GameObject Debug;
-        private GameObject Lower;
-
+        
+        private GameObject eventHandler;
+        
         private List<(Type, UIPanel)> needAddToDic;
         private List<Type> needRemoveFromDic;
-        private GameObject Normal;
-        private GameObject Top;
-
+        
         [ShowInInspector] private Dictionary<Type, UIPanel> uiPanels;
 
         private Dictionary<Type, UIPanelSetting> uiPanelSettings;
-        private GameObject UIRoot;
-        private GameObject Upper;
 
+        private UIConfig uiConfig;
         public void ForeachCurrentAssembly(Type[] types)
         {
             foreach (var type in types)
@@ -41,19 +46,19 @@ namespace ilsFramework.Core
                     uiPanelSettings.TryAdd(type, setting);
                 }
         }
-
-        public void Init()
+        public override void OnInit()
         {
             uiPanelSettings = new Dictionary<Type, UIPanelSetting>();
             uiPanels = new Dictionary<Type, UIPanel>();
 
             needAddToDic = new List<(Type, UIPanel)>();
             needRemoveFromDic = new List<Type>();
-
+            
+            uiConfig = Config.GetConfig<UIConfig>();
             InitUIBaseFramework();
         }
 
-        public void Update()
+        public override void OnUpdate()
         {
             foreach (var tuple in needAddToDic) uiPanels[tuple.Item1] = tuple.Item2;
 
@@ -70,22 +75,19 @@ namespace ilsFramework.Core
 
             foreach (var uiPanel in uiPanels) uiPanel.Value.Update();
         }
-
-        public void LateUpdate()
+        public override void OnLateUpdate()
         {
             foreach (var uiPanel in uiPanels) uiPanel.Value.LateUpdate();
         }
-
-        public void LogicUpdate()
+        public override void OnLogicUpdate()
         {
+            
         }
-
-        public void FixedUpdate()
+        public override void OnFixedUpdate()
         {
             foreach (var uiPanel in uiPanels) uiPanel.Value.FixedUpdate();
         }
-
-        public void OnDestroy()
+        public override void OnDestroy()
         {
             foreach (var uiPanel in uiPanels)
             {
@@ -96,12 +98,14 @@ namespace ilsFramework.Core
             uiPanels.Clear();
         }
 
-        public void OnDrawGizmos()
+        public override void OnDrawGizmos()
         {
+            
         }
 
-        public void OnDrawGizmosSelected()
+        public override void OnDrawGizmosSelected()
         {
+            
         }
 
         public void InitUIBaseFramework()
@@ -133,6 +137,8 @@ namespace ilsFramework.Core
             Debug = new GameObject("Debug");
             Debug.layer = LayerMask.NameToLayer("UI");
             Debug.transform.parent = UIRoot.transform;
+            
+            eventHandler = Object.Instantiate(uiConfig.UIEventHandler, ContainerObject.transform);
         }
 
         public (Transform, int) GetUILayerInfo(EUILayer layer)

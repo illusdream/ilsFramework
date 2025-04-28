@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 namespace ilsFramework.Core
 {
-    public class AssetManager : ManagerSingleton<AssetManager>, IManager
+    public class AssetManager : ManagerSingleton<AssetManager>
     {
         public const string AssetDataBasePath = "Assets";
 
@@ -16,9 +16,8 @@ namespace ilsFramework.Core
         private TableQuery<AssetInfo> assetInfos;
 
         [ShowInInspector] private ResourceLoader resourceLoader;
-
-
-        public void Init()
+        
+        public override void OnInit()
         {
             resourceLoader = new ResourceLoader();
             resourceLoader.Init();
@@ -36,33 +35,40 @@ namespace ilsFramework.Core
                 assetInfos = assetDataBaseConnection.Table<AssetInfo>();
             }
         }
-
-        public void Update()
+        
+        public override void OnUpdate()
         {
+
+        }
+        
+        public override void OnLateUpdate()
+        {
+            
         }
 
-        public void LateUpdate()
+        public override void OnLogicUpdate()
         {
+            
         }
 
-        public void LogicUpdate()
+        public override void OnFixedUpdate()
         {
+            
         }
 
-        public void FixedUpdate()
+        public override void OnDestroy()
         {
+            
         }
 
-        public void OnDestroy()
+        public override void OnDrawGizmos()
         {
+           
         }
 
-        public void OnDrawGizmos()
+        public override void OnDrawGizmosSelected()
         {
-        }
-
-        public void OnDrawGizmosSelected()
-        {
+            
         }
 
         /// <summary>

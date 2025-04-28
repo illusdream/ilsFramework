@@ -7,11 +7,11 @@ namespace ilsFramework.Core
     /// <summary>
     ///     提供对场景变化的事件侦测
     /// </summary>
-    public class SceneHandler : ManagerSingleton<SceneHandler>, IManager
+    public class SceneHandler : ManagerSingleton<SceneHandler>
     {
         private EventCenterCore sceneEventCenterCore;
-
-        public void Init()
+        
+        public override void OnInit()
         {
             sceneEventCenterCore = new EventCenterCore();
             SceneManager.sceneLoaded += SceneManagerOnSceneLoaded;
@@ -19,32 +19,39 @@ namespace ilsFramework.Core
             SceneManager.activeSceneChanged += SceneManagerOnActiveSceneChanged;
         }
 
-        public void Update()
+        public override void OnUpdate()
         {
+            
         }
 
-        public void LateUpdate()
+        public override void OnLateUpdate()
         {
+            
         }
 
-        public void LogicUpdate()
+        public override void OnLogicUpdate()
         {
+           
         }
 
-        public void FixedUpdate()
+        public override void OnFixedUpdate()
         {
+            
         }
 
-        public void OnDestroy()
+        public override void OnDestroy()
         {
+           
         }
 
-        public void OnDrawGizmos()
+        public override void OnDrawGizmos()
         {
+            
         }
 
-        public void OnDrawGizmosSelected()
+        public override void OnDrawGizmosSelected()
         {
+            
         }
 
         public static event Action<EventArgs> SceneOnChange

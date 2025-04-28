@@ -26,14 +26,14 @@ namespace ilsFramework.Core
         /// <summary>
         ///     停止并清理管理类
         /// </summary>
-        void OnDestroy();
+        void Destroy();
 
         /// <summary>
         /// </summary>
-        void OnDrawGizmos();
+        void DrawGizmos();
 
         /// <summary>
         /// </summary>
-        void OnDrawGizmosSelected();
+        void DrawGizmosSelected();
     }
 }

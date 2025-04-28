@@ -11,14 +11,14 @@ namespace ilsFramework.Core
     ///     静态配置：在Unity中编辑/修改，并在打包后不能修改
     ///     因此使用SO作为主要配置手段
     /// </summary>
-    public class ConfigManager : ManagerSingleton<ConfigManager>, IManager
+    public class ConfigManager : ManagerSingleton<ConfigManager>
     {
         public const string EditorFrameworkConfigPath = "Assets/Resources/ilsFramework/Configs/FrameworkConfig.asset";
         public const string RunTimeFrameworkConfigPath = "ilsFramework/Configs/FrameworkConfig";
 
         [ShowInInspector] private Dictionary<Type, object> _configs;
-
-        public void Init()
+        
+        public override void OnInit()
         {
             _configs = new Dictionary<Type, object>();
 
@@ -33,32 +33,40 @@ namespace ilsFramework.Core
                     _configs.Add(_object.GetType(), _object);
         }
 
-        public void Update()
+        public override void OnUpdate()
         {
+            
+        }
+        
+        public override void OnLateUpdate()
+        {
+            
         }
 
-        public void LateUpdate()
+        public override void OnLogicUpdate()
         {
+            
         }
-
-        public void LogicUpdate()
+        
+        public override void OnFixedUpdate()
         {
+           
         }
-
-        public void FixedUpdate()
+        
+        public override void OnDestroy()
         {
+           
         }
-
-        public void OnDestroy()
+        
+        public override void OnDrawGizmos()
         {
+ 
         }
+        
 
-        public void OnDrawGizmos()
+        public override void OnDrawGizmosSelected()
         {
-        }
 
-        public void OnDrawGizmosSelected()
-        {
         }
 
         public T GetConfig<T>() where T : ScriptableObject

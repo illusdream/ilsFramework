@@ -3,40 +3,43 @@ using UnityEngine;
 
 namespace ilsFramework.Core
 {
-    public class PoolManager : ManagerSingleton<PoolManager>, IManager
+    public class PoolManager : ManagerSingleton<PoolManager>
     {
-        public void Init()
+        public override void OnInit()
         {
+            
+        }
+        public override void OnUpdate()
+        {
+            
+        }
+        public override void OnLateUpdate()
+        {
+            
+        }
+        public override void OnLogicUpdate()
+        {
+            
         }
 
-        public void Update()
+        public override void OnFixedUpdate()
         {
+            
         }
-
-        public void LateUpdate()
-        {
-        }
-
-        public void LogicUpdate()
-        {
-        }
-
-        public void FixedUpdate()
-        {
-        }
-
-        public void OnDestroy()
+        public override void OnDestroy()
         {
             foreach (var gameObjectPool in gameObjectPools) gameObjectPool.Value.OnDestroy();
             gameObjectPools.Clear();
         }
 
-        public void OnDrawGizmos()
+        public override void OnDrawGizmos()
         {
+            
         }
 
-        public void OnDrawGizmosSelected()
+        public override void OnDrawGizmosSelected()
         {
+            
         }
 
 

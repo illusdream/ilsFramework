@@ -10,43 +10,45 @@ using Object = UnityEngine.Object;
 
 namespace ilsFramework.Core
 {
-    public class LoggerManager : ManagerSingleton<LoggerManager>, IManager
+    public class LoggerManager : ManagerSingleton<LoggerManager>
     {
         public bool DebugLogEnable = true;
         public bool ErrorLogEnable = true;
         public bool WanringLogEnable = true;
-
-        public void Init()
+        
+        public override void OnInit()
         {
             LoadConfig();
         }
 
-        public void Update()
+        public override void OnUpdate()
         {
+           
+        }
+        public override void OnLateUpdate()
+        {
+           
+        }
+        public override void OnLogicUpdate()
+        {
+           
+        }
+        public override void OnFixedUpdate()
+        {
+           
+        }
+        public override void OnDestroy()
+        {
+           
         }
 
-        public void LateUpdate()
+        public override void OnDrawGizmos()
         {
+           
         }
-
-        public void LogicUpdate()
+        public override void OnDrawGizmosSelected()
         {
-        }
-
-        public void FixedUpdate()
-        {
-        }
-
-        public void OnDestroy()
-        {
-        }
-
-        public void OnDrawGizmos()
-        {
-        }
-
-        public void OnDrawGizmosSelected()
-        {
+            
         }
 
         private void LoadConfig()

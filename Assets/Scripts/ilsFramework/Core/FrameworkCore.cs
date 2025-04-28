@@ -82,6 +82,7 @@ namespace ilsFramework.Core
 
                     var Im = manager as IManager;
                     var Ia = manager as IAssemblyForeach;
+                    var IMS = manager as IManagerSingleton;
                     if (Im != null)
                     {
                         allManagers.Add((Im, frameworkConfig.GetManagerUpdateIndex(type)));
@@ -96,6 +97,20 @@ namespace ilsFramework.Core
                         managerContainerObjects.TryAdd(type, managerContianer);
                     }
 
+                    if (IMS != null)
+                    {
+                        if ( type.GetCustomAttribute(typeof(ManagerModuleAttribute)) is ManagerModuleAttribute managerModuleAttribute)
+                        {
+                            IMS.CreateAllNeedModules(managerModuleAttribute.ModuleType);
+                        }
+                        else
+                        {
+                            IMS.CreateAllNeedModules(null);
+                        }
+
+                    }
+                    
+                    
                     if (Ia != null) list.Add(Ia);
                 }
 
@@ -198,7 +213,7 @@ namespace ilsFramework.Core
             foreach (var manager in managerList)
                 try
                 {
-                    manager.OnDestroy();
+                    manager.Destroy();
                 }
                 catch (Exception e)
                 {
@@ -216,8 +231,8 @@ namespace ilsFramework.Core
             foreach (var manager in managerList)
                 try
                 {
-                    manager.OnDrawGizmos();
-                    if (Selection.activeGameObject == managerContainerObjects[manager.GetType()]) manager.OnDrawGizmosSelected();
+                    manager.DrawGizmos();
+                    if (Selection.activeGameObject == managerContainerObjects[manager.GetType()]) manager.DrawGizmosSelected();
                 }
                 catch (Exception e)
                 {
@@ -233,8 +248,8 @@ namespace ilsFramework.Core
             foreach (var manager in managerList)
                 try
                 {
-                    manager.OnDrawGizmos();
-                    manager.OnDrawGizmosSelected();
+                    manager.DrawGizmos();
+                    manager.DrawGizmosSelected();
                 }
                 catch (Exception e)
                 {
